@@ -1,0 +1,18 @@
+# Local Claude settings — accretes from approval prompts, never committed
+.claude/settings.local.json
+
+# Local paths of this machine — copy from project-config.example.md (which IS committed)
+.claude/rules/project-config.md
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.vscode/
+
+# Family data must never land in any Grobing repo (rules/family-data.md) — defence in depth
+*.db
+*.sqlite
+*.sqlite3
+*.grobing-backup
+exports/
+backups/

@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:-l)",
+      "Bash(git branch:--show-current)",
+      "Bash(git remote get-url:*)",
+      "Bash(flutter --version:*)",
+      "Bash(flutter analyze:*)",
+      "Bash(flutter test:*)"
+    ]
+  },
+  "hooks": {}
+}
