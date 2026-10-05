@@ -35,7 +35,8 @@ sieć jest opcjonalna (ADR-001 local-first, kanon z kick-offu).
 
 - **Żadnych danych rodziny** w kodzie, assetach, fixture'ach (`family-data.md`).
 - Żadnych SDK wysyłających dane z telefonu (crash reporting, analityka) — §Security.
-- Żadnych sekretów w repo: klucz map i keystore poza repo (`project-config.md`).
+- Żadnych sekretów w repo: klucz map i keystore poza repo (`project-config.md`). Plików z sekretami
+  (`key.properties`) **nie tworzy agent**: harness pokazałby mu hasła wpisane potem przez autora.
 - Zmiana schematu bazy → **migracja**, nigdy „wyczyść i stwórz od nowa".
 - Usuwanie danych rodziny → zawsze z potwierdzeniem.
 - **Hand-off:** auto-flow → wywołaj `qa`; ręcznie: „Następny: uruchom /qa".

@@ -12,10 +12,13 @@
 
 1. **Intencja przed budową — lekko** (`planning`, przed `dev`): zwięzły diff zakresu + scenariusz
    akceptacji. Czekaj na „tak" albo poprawki.
-2. **Ręczna weryfikacja w telefonie — dokładnie** (`qa`, po testach): kroki **po polsku**, które może
-   sprawdzić tylko człowiek z telefonem w ręku. Trzy odpowiedzi: **„ok"** · **„pomiń"** (zapisane,
-   nie blokuje) · **opis błędu**. **Cisza ≠ pomiń.** (Rytuał WZ-024: format → analiza → testy → kroki
-   ręczne → czekaj.)
+2. **Ręczna weryfikacja — dokładnie** (`qa`, po testach): kroki **po polsku**, które może sprawdzić
+   tylko człowiek. **Do MVP na emulatorze**; na telefonie tylko wyjątki z `DEFINITION_OF_DONE.md` (GPS
+   na miejscu, słońce, offline na cmentarzu), wyłącznie w buildzie release (decyzja autora
+   2026-10-05). Kroki pogrupowane **według miejsca**: terminal VS Code · plik w edytorze · emulator albo
+   telefon · „napisz tutaj". Trzy odpowiedzi: **„ok"** · **„pomiń"** (zapisane, nie blokuje) ·
+   **opis błędu**. **Cisza ≠ pomiń.** (Rytuał WZ-024: format → analiza → testy → kroki ręczne →
+   czekaj.)
 3. **„go" przed commitem/pushem** (`qa` → commit): paczka zmian (kod + vault), nigdy częściowa.
    Podłoga z `git-autonomy-boundary.md` — **tryb auto nigdy jej nie znosi.**
 

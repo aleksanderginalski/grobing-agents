@@ -28,7 +28,7 @@ gitignorowany) — na nowej maszynie skopiuj go z `project-config.example.md`.
 | `/pm` | Router sesji — stan, sprawy zaparkowane, licznik retro, propozycja następnej pozycji; startuje łańcuch |
 | `/planning` | Pozycja → plan w samej pozycji; punkt stopu #1 (intencja) |
 | `/dev` | Implementacja we Flutterze (`grobing-code`), bez testów |
-| `/qa` | Testy wg DoD (MVP), ręczna weryfikacja w telefonie (stop #2), „go" przed commitem (stop #3) |
+| `/qa` | Testy wg DoD (MVP), ręczna weryfikacja — do MVP na emulatorze (stop #2), „go" przed commitem (stop #3) |
 | `/docs` | Strażnik vaulta — zamyka pozycje, DOC_MAP, macierz powiązań, licznik retro; wykonuje ISSUE-001 |
 
 **Na sygnał, nie teraz:** `ui` (pierwszy ekran) · `debug` (pierwszy błąd) · `discover`/`decompose`

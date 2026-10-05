@@ -1,6 +1,6 @@
 ---
 name: qa
-description: 'Sprawdza zmianę w Grobing względem AC i DoD (MVP) — testy happy-path dla każdego AC, test migracji i próbne odtworzenie z kopii przy warstwie danych, źródło faktów o rodzinie, zero danych rodziny w zmianach — prowadzi ręczną weryfikację w telefonie (stop #2) i rytuał przed commitem (stop #3). Używaj po dev, gdy autor mówi „/qa", „sprawdź", „przetestuj".'
+description: 'Sprawdza zmianę w Grobing względem AC i DoD (MVP) — testy happy-path dla każdego AC, test migracji i próbne odtworzenie z kopii przy warstwie danych, źródło faktów o rodzinie, zero danych rodziny w zmianach — prowadzi ręczną weryfikację (stop #2; do MVP na emulatorze) i rytuał przed commitem (stop #3). Używaj po dev, gdy autor mówi „/qa", „sprawdź", „przetestuj".'
 updated: 2026-10-05
 ---
 
@@ -26,9 +26,12 @@ Do czasu powstania krytyka (ISSUE-003) wystawia też werdykt jakości jako `self
 2. Napisz brakujące testy; uruchom `flutter test`; błędy mechaniczne napraw sam.
 3. Sprawdź zmiany pod kątem danych rodziny (`family-data.md`): pliki `*.db`, `*.sqlite*`, eksporty,
    kopie, zdjęcia, prawdziwe imiona w fixture'ach.
-4. **Punkt stopu #2:** kroki ręcznej weryfikacji w telefonie, po polsku. Czekaj na „ok" / „pomiń"
-   (zapisz w pozycji) / opis błędu (→ `dev`). **Cisza ≠ pomiń.** Przy ekranach wizyty dopisz krok
-   „czytelne w pełnym słońcu?" (NFR A2).
+4. **Punkt stopu #2:** kroki ręcznej weryfikacji po polsku, **do MVP na emulatorze**. Agent sam
+   uruchamia emulator i instaluje aplikację; autor tylko patrzy i klika. Kroki grupuj **według
+   miejsca** (terminal VS Code · plik w edytorze · emulator albo telefon · „napisz tutaj"). Czekaj na
+   „ok" / „pomiń" (zapisz w pozycji) / opis błędu (→ `dev`). **Cisza ≠ pomiń.** Przy ekranach wizyty
+   dopisz krok „czytelne w pełnym słońcu?" (NFR A2). To wyjątek, który wymaga prawdziwego telefonu i
+   buildu release (`DEFINITION_OF_DONE.md`).
 5. Zapisz wynik w sekcji *Verification* pozycji + `quality-verdict` (`verdict-reviewer: self-check`).
 6. **Punkt stopu #3:** pokaż paczkę (kod + vault, wszystkie wygenerowane pliki) → czekaj na „go".
 
@@ -41,6 +44,9 @@ Do czasu powstania krytyka (ISSUE-003) wystawia też werdykt jakości jako `self
 
 - Rygor wg etapu: **MVP** = happy-path na każde AC + linie specyficzne dla Grobing z DoD.
 - Fixture'y wyłącznie z wymyślonymi osobami.
+- **Pliki z sekretami (`key.properties`, hasła) tworzy autor, nigdy agent.** Gdy agent utworzy plik,
+  harness pokazuje mu każdą późniejszą zmianę, więc hasło wpisane przez autora trafiłoby do sesji
+  (ISSUE-002, 2026-10-05). Daj dokładną treść z opisem „wpisz w pliku X w edytorze” i nie czytaj go potem.
 - **Hand-off:** po „go" i commicie → `docs`; błąd z ręcznej weryfikacji → `dev`.
 
 ## Conflict Check
