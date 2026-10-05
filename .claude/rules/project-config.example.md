@@ -33,9 +33,13 @@ language: "pl"                   # treść po polsku; nagłówki i nazwy pól po
 ```yaml
 app_type: "A — Android app, Flutter, local-first (no backend, no accounts, no analytics)"
 flutter_version_pinned: "3.41.1"     # SDK jest współdzielone z inną, wydaną aplikacją autora —
-                                     # NIE aktualizuj globalnego Fluttera bez decyzji (ADR-002)
+                                     # NIE aktualizuj globalnego Fluttera bez decyzji (ADR-002).
+                                     # Sprawdza ją grobing-code/pubspec.yaml → environment.flutter;
+                                     # zmiana = obie linie w jednej paczce
 platforms: ["android"]               # iPhone: Won't (now), MoSCoW W5
-android_package: ""                  # ⚠️ OPEN — ustala ISSUE-002 i wpisuje TUTAJ, nigdzie indziej
+android_package: "com.grobing.app"   # decyzja autora 2026-10-05 (ISSUE-002). NIGDY nie zmieniaj —
+                                     # inna nazwa = inna aplikacja, nie widzi bazy z telefonu
+root_widget: "GrobingApp"            # grobing-code/lib/app/grobing_app.dart
 security_level: "ASVS-lite (MVP), przełożony na telefon — patrz PROJECT_BRIEF §Security"
 family_data_in_repos: "NEVER — patrz .claude/rules/family-data.md"
 ```
