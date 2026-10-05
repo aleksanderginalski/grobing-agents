@@ -53,4 +53,6 @@ release_keystore_dir: ""             # POZA każdym drzewem projektu; nigdy w re
 ```
 
 Agenci resolwują `{vault}` i `{code}` z `project-config.md`. **Skille nie zawierają ścieżek
-absolutnych.**
+absolutnych.** Z tego samego pliku czyta je strażnik danych rodziny
+(`.claude/hooks/family-data-guard.ps1`, ISSUE-006). Bez pliku albo z pustą ścieżką strażnik **blokuje**
+zapis plików oraz `git add`/`commit`, więc na nowej maszynie ten plik powstaje pierwszy (ręcznie).

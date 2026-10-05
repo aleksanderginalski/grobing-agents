@@ -12,5 +12,19 @@
       "Bash(flutter test:*)"
     ]
   },
-  "hooks": {}
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit|Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "powershell",
+            "timeout": 30,
+            "command": "$s = \"$env:CLAUDE_PROJECT_DIR/.claude/hooks/family-data-guard.ps1\"; if (!(Test-Path -LiteralPath $s)) { [Console]::Error.WriteLine(\"family-data-guard: BRAK SKRYPTU $s -- blokuje kazdy zapis i komende (ISSUE-006)\"); exit 2 }; $global:LASTEXITCODE = 2; try { & $s } catch { [Console]::Error.WriteLine(\"family-data-guard: $_\"); exit 2 }; exit $LASTEXITCODE"
+          }
+        ]
+      }
+    ]
+  }
 }

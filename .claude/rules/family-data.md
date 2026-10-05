@@ -21,7 +21,7 @@ kopii w chmurze autora · w **eksporcie** przechowywanym fizycznie u rodziny.
 |---|---|
 | `dev` · `qa` | dane testowe i fixture'y wyłącznie z **wymyślonymi** osobami; żadnych prawdziwych zrzutów bazy do testów |
 | `docs` | sprawa „zapytać babcię o X" może być w vaulcie jako **pytanie bez danych**; odpowiedź trafia do aplikacji |
-| każdy | przed `git add`: w zmianach nie ma plików `*.db`, `*.sqlite*`, eksportów, kopii ani zdjęć spoza zasobów aplikacji (ikony, grafiki UI) |
+| każdy | przed `git add`: w zmianach nie ma baz (`*.db`, `*.sqlite*`), kopii (`*.age`, `*.tar`), eksportów (`*.html`, `*.pdf`) ani zdjęć i filmów spoza zasobów aplikacji (ikony w `android/app/src/main/res/`). Odmowę strażnika traktuj jak stop, nie jak przeszkodę do obejścia |
 
 ## Before the first push — the repos are PUBLIC (decision 2026-10-05)
 
@@ -34,7 +34,7 @@ otwartej którejś z tych pozycji, **zatrzymuje się i to mówi** — to twardy 
 
 | Mechanizm | Status | Czego NIE łapie |
 |---|---|---|
-| `.gitignore` w `grobing-code` (bazy, kopie, eksporty, katalogi zdjęć) | **działa od dnia 1** | nazwiska wpisanego w kod źródłowy albo w dokumentację |
-| hook `PreToolUse` odmawiający zapisu/commitu takich plików (T-05) | **plan** — [[ISSUE-006-setup-family-data-guard]] | jak wyżej: rozpoznaje po typie i miejscu pliku, nie po treści |
+| `.gitignore` w **trzech** repo — ten sam blok: bazy, kopie `*.age`/`*.tar`, eksporty `*.html`/`*.pdf`, zdjęcia i filmy, katalogi `/exports/` `/backups/` `/family-data/` `/real-data/` w korzeniu; w `grobing-code` wyjątek tylko dla obrazów w `android/app/src/main/res/` | **działa** (od dnia 1; lista z [[ISSUE-006-setup-family-data-guard]], 2026-10-05) | treści: nazwiska wpisanego w kod źródłowy albo w dokumentację · pliku dodanego siłą (`git add -f`) poza Claude'em. **To jedyna ochrona commitów autora z VS Code** |
+| hook `PreToolUse` — `.claude/hooks/family-data-guard.ps1` (T-05): odmawia zapisu plików z tej samej listy narzędziami Claude'a w trzech repo; odmawia `git add`/`git commit`, gdy taki plik mógłby wejść do commita; `git add -f` zawsze; **przy własnym błędzie, braku skryptu albo `project-config.md` blokuje** | **działa** — [[ISSUE-006-setup-family-data-guard]] | treści (rozpoznaje plik po typie i miejscu, nie po treści) · zapisu komendą powłoki (`cp`, `>`, `adb pull`) w chwili zapisu — łapie go dopiero przy `git add`/`commit` · commita autora z VS Code (tam działa tylko `.gitignore`) · edycji samego skryptu albo `.gitignore` (widać ją w diffie na stopie #3) |
 | krytyk jakości — powód BLOCK „dane rodziny w repo" | **plan** — [[ISSUE-003-setup-quality-critic]] | tego, czego nie przeczyta |
 | ta reguła | **działa od dnia 1** (ładowana z `CLAUDE.md`) | czegokolwiek, czego agent nie zauważy — dlatego istnieją dwa powyższe |

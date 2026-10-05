@@ -9,10 +9,40 @@ Thumbs.db
 .DS_Store
 .vscode/
 
-# Family data must never land in any Grobing repo (rules/family-data.md) — defence in depth
+# --- Family data: NEVER in any Grobing repo (.claude/rules/family-data.md) ---
+# The same block in all three repos (ISSUE-006). The PreToolUse guard in this repo
+# (.claude/hooks/family-data-guard.ps1) refuses the same list for Claude; this file is what
+# protects the author's own commits. By file type and root folder, not by content.
+# Databases
 *.db
+*.db-journal
+*.db-wal
+*.db-shm
 *.sqlite
 *.sqlite3
-*.grobing-backup
-exports/
-backups/
+*.sqlite-*
+# Backup and export (ADR-004): an age file with a tar inside; the export is HTML + PDF
+*.age
+*.tar
+*.html
+*.pdf
+# Photos and videos
+*.jpg
+*.jpeg
+*.png
+*.heic
+*.heif
+*.webp
+*.gif
+*.bmp
+*.tif
+*.tiff
+*.dng
+*.mp4
+*.mov
+# Real-data folders, anchored to the repo root (unanchored `backups/` would also hide code
+# such as lib/features/backups/)
+/exports/
+/backups/
+/family-data/
+/real-data/
