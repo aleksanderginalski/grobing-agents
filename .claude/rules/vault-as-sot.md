@@ -26,9 +26,12 @@
 | sekcja *Verification* w pozycji · `quality-verdict` (do czasu krytyka: `verdict-reviewer: self-check`) · kolumna Quality Verdict w `TRACEABILITY.md` (do czasu krytyka) | `qa` |
 | `kickoff/` (brief, profil, manifest) | nikt z agentów — zapis sesji kick-off; zmiana = decyzja autora |
 | kod aplikacji | `dev` (bez testów) · testy: `qa` |
+| sekcja *Findings* w spike'u (pomiary, rekomendacja do ADR) — produkt spike'a, tak jak kod w ISSUE | `dev` |
 | — (nic) | `pm` — router tylko czyta; jego wynik żyje w odpowiedzi, nie na dysku |
 
 > **Jedno pole, dwóch pisarzy rozdzielonych przejściem:** `status:` w pozycji backlogu zmienia
 > `planning` (`ready` → `in-progress`) i `docs` (`in-progress` → `done`). Nikt inny; `qa` nie zmienia
-> statusu. Przejścia są sekwencyjne w łańcuchu, więc nie konkurują — ale to jest jawny wyjątek od
+> statusu. To samo dotyczy kolumny **Issue Status** w `TRACEABILITY.md`: `planning` wpisuje
+> `in-progress`, `docs` przy zamknięciu `done` (dopisane przy [[SPIKE-003-backup-and-restore]],
+> 2026-10-05). Przejścia są sekwencyjne w łańcuchu, więc nie konkurują — ale to jest jawny wyjątek od
 > „jeden plik = jeden pisarz", nie przeoczenie.
