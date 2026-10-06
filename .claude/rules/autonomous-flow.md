@@ -13,7 +13,9 @@
 1. **Intencja przed budową — lekko** (`planning`, przed `dev`): zwięzły diff zakresu + scenariusz
    akceptacji. Czekaj na „tak" albo poprawki.
 2. **Ręczna weryfikacja — dokładnie** (`qa`, po testach): kroki **po polsku**, które może sprawdzić
-   tylko człowiek. **Do MVP na emulatorze**; na telefonie tylko wyjątki z `DEFINITION_OF_DONE.md` (GPS
+   tylko człowiek — dla autora to **UI/UX, przepływ, który czuje użytkownik**; pozycję bez nowego ekranu
+   agent sprawdza na emulatorze sam i zapisuje „kroki oddane agentowi” (decyzja autora 2026-10-06,
+   `DEFINITION_OF_DONE.md`). **Do MVP na emulatorze**; na telefonie tylko wyjątki z `DEFINITION_OF_DONE.md` (GPS
    na miejscu, słońce, offline na cmentarzu), wyłącznie w buildzie release (decyzja autora
    2026-10-05). Kroki pogrupowane **według miejsca**: terminal VS Code · plik w edytorze · emulator albo
    telefon · „napisz tutaj". Trzy odpowiedzi: **„ok"** · **„pomiń"** (zapisane, nie blokuje) ·
