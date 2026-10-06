@@ -6,12 +6,20 @@
 
 ## The chain
 
-`pm` → `planning` → `dev` → `qa` → (stop #2, stop #3) → `docs` → `pm` proponuje następne zadanie.
+`pm` → (`ui`, gdy pozycja dodaje albo zmienia ekran) → `planning` → `dev` → `qa` → (stop #2, stop #3) →
+`docs` → `pm` proponuje następne zadanie.
+
+- **`ui` przed `planning`** (decyzja autora 2026-10-06, [[ISSUE-013-setup-ui-agent]]): plan wynika z projektu
+  ekranu. Specyfikacja ekranu (`{vault}/05_DESIGN/`) idzie na stop #1 razem z planem — **bez nowego
+  punktu stopu**. Pozycja z ekranem bez specyfikacji → `planning` zatrzymuje się i odsyła do `ui`.
+- **Przegląd ekranu:** przy pozycji z ekranem `qa` przed stopem #2 woła `ui` w trybie przeglądu jako
+  **subagenta** (bramka wewnętrzna, nie stop). Usterki wracają do `dev`, zanim autor dostanie kroki.
 
 ## Stop-points — the closed list (only these)
 
 1. **Intencja przed budową — lekko** (`planning`, przed `dev`): zwięzły diff zakresu + scenariusz
-   akceptacji. Czekaj na „tak" albo poprawki.
+   akceptacji; przy pozycji z ekranem także link do specyfikacji i — przy nowym ekranie — do makiety od
+   `ui`. Czekaj na „tak" albo poprawki.
 2. **Ręczna weryfikacja — dokładnie** (`qa`, po testach): kroki **po polsku**, które może sprawdzić
    tylko człowiek — dla autora to **UI/UX, przepływ, który czuje użytkownik**; pozycję bez nowego ekranu
    agent sprawdza na emulatorze sam i zapisuje „kroki oddane agentowi” (decyzja autora 2026-10-06,

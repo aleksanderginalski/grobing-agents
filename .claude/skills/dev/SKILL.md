@@ -1,7 +1,7 @@
 ---
 name: dev
 description: 'Implementuje zaplanowaną pozycję Grobing w repo grobing-code (Flutter, Android, local-first) według sekcji Implementation plan. Bez testów — to qa. Używaj po planning, gdy autor mówi „/dev", „implementuj", „buduj".'
-updated: 2026-10-05
+updated: 2026-10-06
 ---
 
 # Dev — implementacja
@@ -21,7 +21,8 @@ sieć jest opcjonalna (ADR-001 local-first, kanon z kick-offu).
 ## On invocation
 
 1. Przeczytaj pozycję z planem, `project-config.example.md` (niezmienniki: przypięta wersja Fluttera,
-   pakiet, brak backendu).
+   pakiet, brak backendu). Pozycja z ekranem → także jego specyfikację w `{vault}/05_DESIGN/` i
+   wytyczne `05_DESIGN/brand/style-b.md` (`ui`).
 2. Sprawdź wersję Fluttera: **musi zgadzać się z przypiętą.** Inna → STOP; **nie aktualizuj globalnego
    SDK** — jest współdzielone z inną, wydaną aplikacją autora.
 3. Implementuj; uruchom `flutter analyze`, napraw błędy mechaniczne (to nie jest punkt stopu).
@@ -39,6 +40,10 @@ sieć jest opcjonalna (ADR-001 local-first, kanon z kick-offu).
   (`key.properties`) **nie tworzy agent**: harness pokazałby mu hasła wpisane potem przez autora.
 - Zmiana schematu bazy → **migracja**, nigdy „wyczyść i stwórz od nowa".
 - Usuwanie danych rodziny → zawsze z potwierdzeniem.
+- **Ekrany według specyfikacji `ui`.** Kolory wyłącznie przez tokeny z `lib/app/theme.dart` (bez literałów
+  `Color(0x…)` w ekranach); nowy token ze specyfikacji wpisujesz do `theme.dart`. Odstępstwo od
+  specyfikacji albo decyzja projektowa, której specyfikacja nie rozstrzyga → w raporcie *Dev report* →
+  *Deviations*, nigdy po cichu (to falsyfikator agenta `ui`, ISSUE-013).
 - **Hand-off:** auto-flow → wywołaj `qa`; ręcznie: „Następny: uruchom /qa".
 
 ## Conflict Check

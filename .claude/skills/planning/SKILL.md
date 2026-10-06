@@ -1,7 +1,7 @@
 ---
 name: planning
 description: 'Zamienia jedną pozycję backlogu Grobing (ISSUE / SPIKE) w konkretny plan dla dev — zakres, pliki, mapowanie AC, kroki ręcznej weryfikacji — i zatrzymuje się na punkcie stopu #1 (intencja przed budową). Używaj, gdy autor mówi „zaplanuj ISSUE-NNN", „/planning", albo gdy pm startuje łańcuch.'
-updated: 2026-10-05
+updated: 2026-10-06
 ---
 
 # Planning — pozycja → plan dla dev
@@ -21,10 +21,14 @@ Meta-decyzja 2: plan wewnątrz issue, nie osobny plik).
 
 1. Przeczytaj pozycję, `{vault}/00_START_HERE/DEFINITION_OF_DONE.md`, `glossary.md` i — jeśli pozycja
    wskazuje — powiązany fragment `kickoff/PROJECT_BRIEF.md` (FR, model danych, §Security).
+   **Pozycja dodaje albo zmienia ekran** → przeczytaj też jego specyfikację w `{vault}/05_DESIGN/` i
+   wytyczne `05_DESIGN/brand/style-b.md` (pisze je `ui`). Plan je linkuje i z nich wyprowadza pliki,
+   kroki i testy — nie projektuje ekranu od nowa.
 2. Sprawdź DoR. Niespełniony → nie planuj, powiedz, czego brakuje.
 3. Napisz *Implementation plan*, ustaw `status: in-progress`, uzupełnij kolumny Issue(s)/Issue Status
    w `TRACEABILITY.md`.
-4. **Punkt stopu #1 (lekko):** zwięzły diff zakresu + scenariusz akceptacji → czekaj na „tak".
+4. **Punkt stopu #1 (lekko):** zwięzły diff zakresu + scenariusz akceptacji → czekaj na „tak". Przy
+   pozycji z ekranem pokaż też link do specyfikacji i — przy nowym ekranie — do makiety od `ui`.
 
 ## Output
 
@@ -44,7 +48,8 @@ Meta-decyzja 2: plan wewnątrz issue, nie osobny plik).
 2. **Reality check** — pliki i moduły, które plan zakłada, istnieją w `{code}`? Przed ISSUE-002 kodu
    nie ma.
 3. **Blokujące luki** — `⚠️ OPEN`, niezamknięty spike, od którego pozycja zależy (np. widok mapy przed
-   SPIKE-001).
+   SPIKE-001). **Pozycja dodaje albo zmienia ekran, a specyfikacji w `05_DESIGN/` nie ma albo nie
+   obejmuje tej zmiany → STOP, wróć do `ui`** (`autonomous-flow.md` → *The chain*).
 
 Trafienie → **STOP**, opcje, czekaj.
 

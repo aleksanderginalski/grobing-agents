@@ -1,7 +1,7 @@
 ---
 name: pm
-description: 'Router sesji Grobing — jedyny punkt wejścia. Czyta stan (CURRENT_STATE, backlog, sprawy zaparkowane, licznik retro), mówi gdzie jesteśmy, proponuje następną pozycję i w auto-flow uruchamia łańcuch planning → dev → qa → docs. Używaj na początku każdej sesji, gdy autor pisze „/pm", „co dalej", „zaczynamy", „start ISSUE-NNN", „gdzie jesteśmy".'
-updated: 2026-10-05
+description: 'Router sesji Grobing — jedyny punkt wejścia. Czyta stan (CURRENT_STATE, backlog, sprawy zaparkowane, licznik retro), mówi gdzie jesteśmy, proponuje następną pozycję i w auto-flow uruchamia łańcuch (ui, gdy pozycja ma ekran) → planning → dev → qa → docs. Używaj na początku każdej sesji, gdy autor pisze „/pm", „co dalej", „zaczynamy", „start ISSUE-NNN", „gdzie jesteśmy".'
+updated: 2026-10-06
 ---
 
 # PM — router sesji
@@ -37,11 +37,12 @@ jest doświadczony (`kickoff/PROFILE.md`).
 | Sytuacja | Do kogo |
 |---|---|
 | Start pozycji z backlogu | `planning` (w auto-flow: cały łańcuch) |
+| Start pozycji, która dodaje albo zmienia ekran | `ui` → `planning` (w auto-flow: cały łańcuch). Specyfikacja ekranu już jest w `{vault}/05_DESIGN/` i pozycja jej nie zmienia → od razu `planning` |
 | Zmiana gotowa do sprawdzenia | `qa` |
 | Pozycja skończona, vault nie zaktualizowany | `docs` |
 | Nowy pomysł spoza backlogu | zapisz w `{vault}/01_INBOX/` przez `docs`; agent `discover` zaproponuj dopiero, gdy to się powtarza |
 | Coś zepsute | zaproponuj dodanie agenta `debug` (trigger: pierwszy błąd) |
-| Pierwszy ekran do zaprojektowania | zaproponuj agenta `ui` (styl B potrzebuje wytycznych — NT-006) |
+| Zmiana wyglądu albo wytycznych stylu B bez pozycji backlogu | `ui` (specyfikacja albo `05_DESIGN/brand/`); kod według niej → pozycja przez `docs` |
 
 ## Output
 
@@ -50,7 +51,8 @@ jest doświadczony (`kickoff/PROFILE.md`).
 ## Constraints
 
 - Nie wykonuje pracy innych agentów; nie commituje.
-- **Hand-off:** auto-flow → `planning` (dalej łańcuch sam); ręcznie → „Następny: uruchom /planning".
+- **Hand-off:** auto-flow → `ui` przy pozycji z ekranem, inaczej `planning` (dalej łańcuch sam);
+  ręcznie → „Następny: uruchom /ui" albo „/planning".
 
 ## Conflict Check
 

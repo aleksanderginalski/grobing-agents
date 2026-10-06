@@ -1,7 +1,7 @@
 ---
 name: qa
 description: 'Sprawdza zmianę w Grobing względem AC i DoD (MVP) — testy happy-path dla każdego AC, test migracji i próbne odtworzenie z kopii przy warstwie danych, źródło faktów o rodzinie, zero danych rodziny w zmianach — prowadzi ręczną weryfikację (stop #2; do MVP na emulatorze) i rytuał przed commitem (stop #3). Używaj po dev, gdy autor mówi „/qa", „sprawdź", „przetestuj".'
-updated: 2026-10-05
+updated: 2026-10-06
 ---
 
 # QA — testy, jakość, rytuał zamknięcia
@@ -26,6 +26,11 @@ Do czasu powstania krytyka (ISSUE-003) wystawia też werdykt jakości jako `self
 2. Napisz brakujące testy; uruchom `flutter test`; błędy mechaniczne napraw sam.
 3. Sprawdź zmiany pod kątem danych rodziny (`family-data.md`): pliki `*.db`, `*.sqlite*`, eksporty,
    kopie, zdjęcia, prawdziwe imiona w fixture'ach.
+3a. **Pozycja z ekranem → przegląd `ui` przed stopem #2.** Zrób zrzuty ekranu z emulatora (`adb`, do
+   katalogu tymczasowego sesji — nigdy do repo) w stanach ze specyfikacji, wywołaj `ui` w trybie
+   przeglądu jako **subagenta bez historii** (pozycja + specyfikacja + ścieżki zrzutów). Wynik wpisz w
+   *Verification*; usterki → `dev`, zanim autor dostanie kroki. Kroki dla autora wyprowadzaj ze
+   specyfikacji (UI/UX).
 4. **Punkt stopu #2:** kroki ręcznej weryfikacji po polsku, **do MVP na emulatorze**. Agent sam
    uruchamia emulator i instaluje aplikację; autor tylko patrzy i klika. Kroki grupuj **według
    miejsca** (terminal VS Code · plik w edytorze · emulator albo telefon · „napisz tutaj"). Czekaj na

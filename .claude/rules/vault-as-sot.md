@@ -25,6 +25,7 @@
 | sekcja *Implementation plan* w pozycji · `status: in-progress` · kolumny Issue(s)/Issue Status | `planning` |
 | sekcja *Verification* w pozycji · `quality-verdict` (do czasu krytyka: `verdict-reviewer: self-check`) · kolumna Quality Verdict w `TRACEABILITY.md` (do czasu krytyka) | `qa` |
 | `kickoff/` (brief, profil, manifest) | nikt z agentów — zapis sesji kick-off; zmiana = decyzja autora |
+| treść `05_DESIGN/`: specyfikacje ekranów · wytyczne stylu B (`05_DESIGN/brand/`). Folder i wiersz DOC_MAP zakłada `docs` (`doc-growth.md`). Wartości kolorów żyją w kodzie (`theme.dart`, pisze `dev`), wytyczne podają rolę, regułę i pomiar | `ui` ([[ISSUE-013-setup-ui-agent]]) |
 | kod aplikacji | `dev` (bez testów) · testy: `qa` |
 | sekcja *Findings* w spike'u (pomiary, rekomendacja do ADR) — produkt spike'a, tak jak kod w ISSUE | `dev` |
 | — (nic) | `pm` — router tylko czyta; jego wynik żyje w odpowiedzi, nie na dysku |

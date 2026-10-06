@@ -26,12 +26,13 @@ gitignorowany) — na nowej maszynie skopiuj go z `project-config.example.md`.
 | Skill | Rola |
 |---|---|
 | `/pm` | Router sesji — stan, sprawy zaparkowane, licznik retro, propozycja następnej pozycji; startuje łańcuch |
+| `/ui` | Projektant ekranów — przed `planning`, gdy pozycja dodaje albo zmienia ekran: specyfikacja w `05_DESIGN/` (+ makieta przy nowym ekranie); właściciel wytycznych stylu B; przegląd zbudowanego ekranu dla `qa`. Bez kodu |
 | `/planning` | Pozycja → plan w samej pozycji; punkt stopu #1 (intencja) |
 | `/dev` | Implementacja we Flutterze (`grobing-code`), bez testów |
 | `/qa` | Testy wg DoD (MVP), ręczna weryfikacja — do MVP na emulatorze (stop #2), „go" przed commitem (stop #3) |
 | `/docs` | Strażnik vaulta — zamyka pozycje, DOC_MAP, macierz powiązań, licznik retro; wykonuje ISSUE-001 |
 
-**Na sygnał, nie teraz:** `ui` (pierwszy ekran) · `debug` (pierwszy błąd) · `discover`/`decompose`
+**Na sygnał, nie teraz:** `debug` (pierwszy błąd) · `discover`/`decompose`
 (pomysł spoza bieżącej pracy) · `ci` (pierwszy pipeline). Krytyk `quality` — do zbudowania w
 ISSUE-003.
 
