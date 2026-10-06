@@ -29,8 +29,8 @@ gitignorowany) — na nowej maszynie skopiuj go z `project-config.example.md`.
 | `/ui` | Projektant ekranów — przed `planning`, gdy pozycja dodaje albo zmienia ekran: specyfikacja w `05_DESIGN/` (+ makieta przy nowym ekranie); właściciel wytycznych stylu B; przegląd zbudowanego ekranu dla `qa`. Bez kodu |
 | `/planning` | Pozycja → plan w samej pozycji; punkt stopu #1 (intencja) |
 | `/dev` | Implementacja we Flutterze (`grobing-code`), bez testów |
-| `/qa` | Testy wg DoD (MVP), ręczna weryfikacja — do MVP na emulatorze (stop #2), „go" przed commitem (stop #3) |
-| `/docs` | Strażnik vaulta — zamyka pozycje, DOC_MAP, macierz powiązań, licznik retro; wykonuje ISSUE-001 |
+| `/qa` | Testy wg DoD (MVP), ręczna weryfikacja — do MVP na emulatorze (stop #2, dla autora tylko UI/UX) |
+| `/docs` | Strażnik vaulta — zamyka pozycje, DOC_MAP, macierz powiązań, licznik retro; **commituje paczkę pozycji po checkliście** (bez pytania; push tylko po „go”); wykonuje ISSUE-001 |
 
 **Na sygnał, nie teraz:** `debug` (pierwszy błąd) · `discover`/`decompose`
 (pomysł spoza bieżącej pracy) · `ci` (pierwszy pipeline). Krytyk `quality` — do zbudowania w
@@ -46,6 +46,7 @@ ISSUE-003.
 ## Three things that are never negotiable here
 
 1. **Dane rodziny nigdy w żadnym repo** (`family-data.md`).
-2. **Bez „go" nie ma commita** (`git-autonomy-boundary.md`).
+2. **Bez „go" nie ma pushu; commit tylko jawnej listy plików pozycji, po checkliście**
+   (`git-autonomy-boundary.md`, decyzja autora 2026-10-06).
 3. **Globalny Flutter się nie aktualizuje** bez decyzji — SDK jest współdzielone z inną, wydaną
    aplikacją autora (`project-config.example.md`).

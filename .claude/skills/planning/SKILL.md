@@ -27,8 +27,9 @@ Meta-decyzja 2: plan wewnątrz issue, nie osobny plik).
 2. Sprawdź DoR. Niespełniony → nie planuj, powiedz, czego brakuje.
 3. Napisz *Implementation plan*, ustaw `status: in-progress`, uzupełnij kolumny Issue(s)/Issue Status
    w `TRACEABILITY.md`.
-4. **Punkt stopu #1 (lekko):** zwięzły diff zakresu + scenariusz akceptacji → czekaj na „tak". Przy
-   pozycji z ekranem pokaż też link do specyfikacji i — przy nowym ekranie — do makiety od `ui`.
+4. **Punkt stopu #1:** zwięzły diff zakresu + scenariusz akceptacji → czekaj na „tak". **Przy pozycji z
+   ekranem — dokładnie** (retro 1, R5): link do specyfikacji i, przy nowym ekranie, do makiety od `ui`;
+   decyzje projektowe i `⚠️ OPEN` ze specyfikacji wypisane wprost.
 
 ## Output
 

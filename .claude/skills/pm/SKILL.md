@@ -1,6 +1,6 @@
 ---
 name: pm
-description: 'Router sesji Grobing — jedyny punkt wejścia. Czyta stan (CURRENT_STATE, backlog, sprawy zaparkowane, licznik retro), mówi gdzie jesteśmy, proponuje następną pozycję i w auto-flow uruchamia łańcuch (ui, gdy pozycja ma ekran) → planning → dev → qa → docs. Używaj na początku każdej sesji, gdy autor pisze „/pm", „co dalej", „zaczynamy", „start ISSUE-NNN", „gdzie jesteśmy".'
+description: 'Router sesji Grobing — jedyny punkt wejścia i zamknięcie sesji. Czyta stan (CURRENT_STATE, backlog, sprawy zaparkowane, licznik retro), mówi gdzie jesteśmy, proponuje następną pozycję i w auto-flow uruchamia łańcuch (ui, gdy pozycja ma ekran) → planning → dev → qa → docs; na końcu sesji mówi, co dalej i że można kończyć. Używaj na początku każdej sesji, gdy autor pisze „/pm", „co dalej", „zaczynamy", „start ISSUE-NNN", „gdzie jesteśmy", „kończymy".'
 updated: 2026-10-06
 ---
 
@@ -31,6 +31,13 @@ jest doświadczony (`kickoff/PROFILE.md`).
    ostatnie odtworzenie z kopii naprawdę zadziałało? · ile osób jest w aplikacji vs w notatkach? ·
    które cmentarze nie mają pinezek?*
 5. Zakończ blokiem: **gdzie jesteśmy · czego potrzebuję (jedna rzecz) · co potem**.
+6. **Koniec sesji** (po zamknięciu pozycji albo gdy autor kończy — retro 1, R2): **co dalej** (jedna
+   pozycja i dlaczego) i jasne **„możesz kończyć sesję”**. Najpierw sprawdź `git status` trzech repo — jeśli
+   coś nie jest zapisane albo zacommitowane, powiedz wprost co i co z tym zrobić.
+7. **Dane rodziny w repo:** jeśli `git status --ignored` pokazuje w którymś repo pliki, których nie stworzył
+   żaden agent (notatki, zdjęcia), zgłoś je na początku i zaproponuj przeniesienie do `family_data_dir`
+   (`family-data.md`, R3). Wyjątek znany: `grobing-vault/05_DESIGN/brand/references/` — obrazy stylu B z
+   kick-offu, wygenerowane, bez danych rodziny (decyzja autora 2026-10-06).
 
 ## Routing
 

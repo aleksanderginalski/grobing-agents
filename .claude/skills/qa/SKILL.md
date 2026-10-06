@@ -1,6 +1,6 @@
 ---
 name: qa
-description: 'Sprawdza zmianę w Grobing względem AC i DoD (MVP) — testy happy-path dla każdego AC, test migracji i próbne odtworzenie z kopii przy warstwie danych, źródło faktów o rodzinie, zero danych rodziny w zmianach — prowadzi ręczną weryfikację (stop #2; do MVP na emulatorze) i rytuał przed commitem (stop #3). Używaj po dev, gdy autor mówi „/qa", „sprawdź", „przetestuj".'
+description: 'Sprawdza zmianę w Grobing względem AC i DoD (MVP) — testy happy-path dla każdego AC, test migracji i próbne odtworzenie z kopii przy warstwie danych, źródło faktów o rodzinie, zero danych rodziny w zmianach — prowadzi ręczną weryfikację (stop #2; do MVP na emulatorze, dla autora tylko UI/UX) i oddaje paczkę docs do zamknięcia i commita. Używaj po dev, gdy autor mówi „/qa", „sprawdź", „przetestuj".'
 updated: 2026-10-06
 ---
 
@@ -16,9 +16,9 @@ Do czasu powstania krytyka (ISSUE-003) wystawia też werdykt jakości jako `self
   **źródło + status** przy każdym zapisie faktu o rodzinie (FR provenance — kanon genealogii).
 - Twarde minimum bezpieczeństwa (§Security): brak sekretów, brak SDK wysyłających dane z telefonu.
 - **Rytuał zamknięcia (WZ-024):** format → analiza → testy → kroki ręczne po polsku → **czekaj** →
-  dopiero potem propozycja commita, **nigdy częściowego**.
+  dopiero potem `docs` (zamknięcie i commit paczki, **nigdy częściowej**).
 - **Does NOT:** pisze kodu produkcyjnego (wraca do `dev`), nie aktualizuje vaulta poza swoją sekcją,
-  nie commituje bez „go".
+  nie commituje (commit robi `docs` po checkliście, R1).
 
 ## On invocation
 
@@ -38,7 +38,9 @@ Do czasu powstania krytyka (ISSUE-003) wystawia też werdykt jakości jako `self
    dopisz krok „czytelne w pełnym słońcu?" (NFR A2). To wyjątek, który wymaga prawdziwego telefonu i
    buildu release (`DEFINITION_OF_DONE.md`).
 5. Zapisz wynik w sekcji *Verification* pozycji + `quality-verdict` (`verdict-reviewer: self-check`).
-6. **Punkt stopu #3:** pokaż paczkę (kod + vault, wszystkie wygenerowane pliki) → czekaj na „go".
+6. **Lista paczki dla `docs`:** wszystkie pliki, które ta pozycja zapisała (kod, testy, wygenerowane,
+   vault). `docs` commituje dokładnie tę listę (`git-autonomy-boundary.md`). Stopu przed commitem nie ma
+   (retro 1, R1); „go” jest tylko przed pushem.
 
 ## Output
 
@@ -52,7 +54,7 @@ Do czasu powstania krytyka (ISSUE-003) wystawia też werdykt jakości jako `self
 - **Pliki z sekretami (`key.properties`, hasła) tworzy autor, nigdy agent.** Gdy agent utworzy plik,
   harness pokazuje mu każdą późniejszą zmianę, więc hasło wpisane przez autora trafiłoby do sesji
   (ISSUE-002, 2026-10-05). Daj dokładną treść z opisem „wpisz w pliku X w edytorze” i nie czytaj go potem.
-- **Hand-off:** po „go" i commicie → `docs`; błąd z ręcznej weryfikacji → `dev`.
+- **Hand-off:** po stopie #2 → `docs` (zamknięcie i commit); błąd z ręcznej weryfikacji → `dev`.
 
 ## Conflict Check
 
@@ -70,4 +72,4 @@ Trafienie → **STOP**, opcje, czekaj.
 4. **Nieprawdziwy raport jest gorszy niż porażka** — `APPROVED` bez żadnej uwagi wymaga listy tego,
    czego szukałeś i nie znalazłeś. Self-check, który ogłasza sukces niekompletnej pracy, wyłącza
    wykrywanie wszystkiego innego.
-5. **Pass** → stop #3. **Fail** → zostaw `in-progress`, wypisz braki, wróć do `dev`.
+5. **Pass** → `docs`. **Fail** → zostaw `in-progress`, wypisz braki, wróć do `dev`.

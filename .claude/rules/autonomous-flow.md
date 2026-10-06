@@ -6,8 +6,12 @@
 
 ## The chain
 
-`pm` → (`ui`, gdy pozycja dodaje albo zmienia ekran) → `planning` → `dev` → `qa` → (stop #2, stop #3) →
-`docs` → `pm` proponuje następne zadanie.
+`pm` → (`ui`, gdy pozycja dodaje albo zmienia ekran) → `planning` → `dev` → `qa` → (stop #2) → `docs`
+(zamknięcie **i commit paczki** po checkliście z `git-autonomy-boundary.md`) → `pm` proponuje następne
+zadanie.
+
+- **Commit bez pytania, push po „go”** (decyzja autora 2026-10-06, retro 1 — R1). Zamknięcie `docs` idzie
+  **przed** commitem, więc jedna pozycja to jeden commit na repo, razem ze stanem w vaulcie.
 
 - **`ui` przed `planning`** (decyzja autora 2026-10-06, [[ISSUE-013-setup-ui-agent]]): plan wynika z projektu
   ekranu. Specyfikacja ekranu (`{vault}/05_DESIGN/`) idzie na stop #1 razem z planem — **bez nowego
@@ -17,9 +21,10 @@
 
 ## Stop-points — the closed list (only these)
 
-1. **Intencja przed budową — lekko** (`planning`, przed `dev`): zwięzły diff zakresu + scenariusz
-   akceptacji; przy pozycji z ekranem także link do specyfikacji i — przy nowym ekranie — do makiety od
-   `ui`. Czekaj na „tak" albo poprawki.
+1. **Intencja przed budową** (`planning`, przed `dev`): **lekko** — zwięzły diff zakresu + scenariusz
+   akceptacji. **Przy pozycji z ekranem — dokładnie** (retro 1, R5): także specyfikacja i, przy nowym
+   ekranie, makieta od `ui`, bo to na makiecie autor zmienia strukturę ekranów taniej niż w kodzie.
+   Czekaj na „tak" albo poprawki.
 2. **Ręczna weryfikacja — dokładnie** (`qa`, po testach): kroki **po polsku**, które może sprawdzić
    tylko człowiek — dla autora to **UI/UX, przepływ, który czuje użytkownik**; pozycję bez nowego ekranu
    agent sprawdza na emulatorze sam i zapisuje „kroki oddane agentowi” (decyzja autora 2026-10-06,
@@ -29,14 +34,15 @@
    telefon · „napisz tutaj". Trzy odpowiedzi: **„ok"** · **„pomiń"** (zapisane, nie blokuje) ·
    **opis błędu**. **Cisza ≠ pomiń.** (Rytuał WZ-024: format → analiza → testy → kroki ręczne →
    czekaj.)
-3. **„go" przed commitem/pushem** (`qa` → commit): paczka zmian (kod + vault), nigdy częściowa.
-   Podłoga z `git-autonomy-boundary.md` — **tryb auto nigdy jej nie znosi.**
+3. **„go" przed pushem** (i każdą operacją na zdalnym repo). Commit lokalny robi `docs` sam, po checkliście
+   (retro 1, R1). Podłoga z `git-autonomy-boundary.md` — **tryb auto nigdy nie znosi „go” przed pushem.**
 
 ## Hard stops — independent of mode, cannot be removed
 
 - powód BLOCK z listy krytyka (gdy powstanie — ISSUE-003); do tego czasu: ryzyko utraty danych
   rodziny, dane rodziny w repo, fakt o rodzinie bez źródła, niespełnione AC, zmiana bez odbicia w vaulcie;
-- każda operacja git zmieniająca stan;
+- każda operacja git zmieniająca stan **poza commitem po checkliście** (push zawsze stop);
+- odmowa strażnika danych rodziny przy `git add` albo `git commit`;
 - zmiana zakresu odkryta w trakcie — nigdy nie poszerzaj po cichu;
 - prawdziwe rozwidlenie decyzji, które należy do autora;
 - problem, którego agent nie umie naprawić.
@@ -70,3 +76,9 @@ self-check — zapisuje to, co agent *myślał*, że robi.
 
 Prawdziwy produkt → po zamknięciu pozycji `pm` **aktywnie proponuje następną**, wyprowadzoną ze stanu
 w `CURRENT_STATE.md` i backlogu — nie z grzeczności.
+
+**Koniec sesji** (decyzja autora 2026-10-06, retro 1 — R2): ostatnia odpowiedź sesji zawsze ma dwie
+rzeczy:
+1. **co dalej** — jedna pozycja i dlaczego ona;
+2. **jasne „możesz kończyć sesję”** — wszystko zapisane w vaulcie i zacommitowane. Albo wprost: co jeszcze
+   nie jest zapisane i co z tym zrobić.

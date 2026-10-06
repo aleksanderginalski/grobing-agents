@@ -50,6 +50,8 @@ family_data_in_repos: "NEVER — patrz .claude/rules/family-data.md"
 vault_local_path: ""                 # np. "C:\\Programowanie\\Grobing\\grobing-vault"
 code_local_path: ""                  # np. "C:\\Programowanie\\Grobing\\grobing-code"
 release_keystore_dir: ""             # POZA każdym drzewem projektu; nigdy w repo (floor: no secrets in repo)
+family_data_dir: ""                  # np. "C:\\Programowanie\\Grobing\\_dane-rodziny" — POZA trzema repo i
+                                     # workspace'em; przystanek roboczy na notatki rodziny (family-data.md, R3)
 ```
 
 Agenci resolwują `{vault}` i `{code}` z `project-config.md`. **Skille nie zawierają ścieżek
