@@ -39,8 +39,9 @@ Do czasu powstania krytyka (ISSUE-003) wystawia też werdykt jakości jako `self
    buildu release (`DEFINITION_OF_DONE.md`).
 5. Zapisz wynik w sekcji *Verification* pozycji + `quality-verdict` (`verdict-reviewer: self-check`).
 6. **Lista paczki dla `docs`:** wszystkie pliki, które ta pozycja zapisała (kod, testy, wygenerowane,
-   vault). `docs` commituje dokładnie tę listę (`git-autonomy-boundary.md`). Stopu przed commitem nie ma
-   (retro 1, R1); „go” jest tylko przed pushem.
+   vault). `docs` commituje dokładnie tę listę i wypycha ją na GitHub (`git-autonomy-boundary.md`). Stopu
+   przed commitem ani pushem nie ma (retro 1, R1; decyzja autora 2026-10-07), więc kontrola danych rodziny
+   w zmianach jest tutaj, przed `git add`, a nie później.
 
 ## Output
 

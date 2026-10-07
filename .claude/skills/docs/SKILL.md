@@ -1,7 +1,7 @@
 ---
 name: docs
-description: 'Strażnik vaulta Grobing — zamyka pozycje, aktualizuje CURRENT_STATE, DOC_MAP, macierz powiązań i licznik retro, tworzy foldery wg reguły doc-growth, commituje paczkę pozycji po checkliście (push tylko po „go”), wykonuje ISSUE-001 (materializacja backlogu z briefu). Używaj po qa, gdy autor mówi „/docs", „zamknij pozycję", „zaktualizuj dokumentację", „dograj backlog".'
-updated: 2026-10-06
+description: 'Strażnik vaulta Grobing — zamyka pozycje, aktualizuje CURRENT_STATE, DOC_MAP, macierz powiązań i licznik retro, tworzy foldery wg reguły doc-growth, commituje paczkę pozycji po checkliście i wypycha ją na GitHub („go” tylko poza zwykłym pushem), wykonuje ISSUE-001 (materializacja backlogu z briefu). Używaj po qa, gdy autor mówi „/docs", „zamknij pozycję", „zaktualizuj dokumentację", „dograj backlog".'
+updated: 2026-10-07
 ---
 
 # Docs — strażnik vaulta
@@ -16,7 +16,8 @@ i żeby vault rósł bez śmietnika (`doc-growth.md`).
 - Nowe foldery **tylko na sygnał** z `doc-growth.md`, zawsze z wierszem w `DOC_MAP.md`.
 - Wykonuje [[ISSUE-001-materialize-backlog]] (EPIC-i, persony, ADR-y z briefu).
 - **Commit paczki pozycji** po zamknięciu, bez pytania, według checklisty z `git-autonomy-boundary.md`
-  (decyzja autora 2026-10-06, retro 1 — R1). **Push: tylko po „go”.**
+  (decyzja autora 2026-10-06, retro 1 — R1), **i push zaraz po nim** (decyzja autora 2026-10-07). „go”
+  tylko przy commicie spoza łańcucha, odrzuconym pushu albo innej operacji na zdalnym repo.
 - **Does NOT:** pisze kodu ani testów, nie planuje pozycji, nie zmienia zapisu kick-offu
   (`kickoff/`) — to zapis decyzji autora; **nie zapisuje danych rodziny** w żadnym pliku vaulta.
 
@@ -35,12 +36,17 @@ i żeby vault rósł bez śmietnika (`doc-growth.md`).
    - w dzienniku łańcucha hash każdego commita i sposób cofnięcia (`git revert <hash>`).
    
    Warunek niespełniony → nie commituj, wypisz braki, czekaj.
+6. **Push** zaraz po commicie, w każdym repo z commitem (`git-autonomy-boundary.md` → *push*):
+   - `git log --oneline origin/main..main` w odpowiedzi — same hashe z dziennika tej sesji; commit spoza
+     łańcucha → STOP i „go”;
+   - `git push origin main`, nigdy force; odrzucony → STOP, bez `pull`/`rebase`;
+   - w dzienniku łańcucha „wypchnięte” przy hashu.
 
 ## Output
 
 - `{vault}/00_START_HERE/CURRENT_STATE.md` · `DOC_MAP.md` · kolumny EPIC/US/Story Status w
-  `TRACEABILITY.md` · `status: done` w pozycjach · foldery i pliki z ISSUE-001 · **commity paczki pozycji**
-  (hashe w dzienniku łańcucha).
+  `TRACEABILITY.md` · `status: done` w pozycjach · foldery i pliki z ISSUE-001 · **commity paczki pozycji,
+  wypchnięte na GitHub** (hashe w dzienniku łańcucha).
 
 ## Constraints
 
@@ -68,4 +74,6 @@ Trafienie → **STOP**, opcje, czekaj.
 5. **Wystarczalność** — czego jeszcze vault potrzebuje po tej zmianie, a czego nie dopisałeś?
 6. **Commit** — w commicie są tylko pliki tej pozycji; repo po commicie czyste albo z wymienionymi
    plikami, które nie są tej pozycji.
-7. **Pass** → commit → wróć do `pm`. **Fail** → wypisz braki, pozycja zostaje `in-progress`, bez commita.
+7. **Push** — `origin/main..main` puste w każdym repo z commitem albo powód, dla którego czeka na „go”.
+8. **Pass** → commit → push → wróć do `pm`. **Fail** → wypisz braki, pozycja zostaje `in-progress`, bez
+   commita.

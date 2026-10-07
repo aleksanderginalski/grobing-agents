@@ -7,11 +7,11 @@
 ## The chain
 
 `pm` → (`ui`, gdy pozycja dodaje albo zmienia ekran) → `planning` → `dev` → `qa` → (stop #2) → `docs`
-(zamknięcie **i commit paczki** po checkliście z `git-autonomy-boundary.md`) → `pm` proponuje następne
+(zamknięcie, **commit i push paczki** po checkliście z `git-autonomy-boundary.md`) → `pm` proponuje następne
 zadanie.
 
-- **Commit bez pytania, push po „go”** (decyzja autora 2026-10-06, retro 1 — R1). Zamknięcie `docs` idzie
-  **przed** commitem, więc jedna pozycja to jeden commit na repo, razem ze stanem w vaulcie.
+- **Commit i push bez pytania** (decyzje autora: commit 2026-10-06, retro 1 — R1; push 2026-10-07).
+Zamknięcie `docs` idzie **przed** commitem, więc jedna pozycja to jeden commit na repo, razem ze stanem w vaulcie, i zaraz potem jest na GitHubie (warunki: `git-autonomy-boundary.md` → *push*).
 
 - **`ui` przed `planning`** (decyzja autora 2026-10-06, [[ISSUE-013-setup-ui-agent]]): plan wynika z projektu
   ekranu. Specyfikacja ekranu (`{vault}/05_DESIGN/`) idzie na stop #1 razem z planem — **bez nowego
@@ -34,14 +34,17 @@ zadanie.
    telefon · „napisz tutaj". Trzy odpowiedzi: **„ok"** · **„pomiń"** (zapisane, nie blokuje) ·
    **opis błędu**. **Cisza ≠ pomiń.** (Rytuał WZ-024: format → analiza → testy → kroki ręczne →
    czekaj.)
-3. **„go" przed pushem** (i każdą operacją na zdalnym repo). Commit lokalny robi `docs` sam, po checkliście
-   (retro 1, R1). Podłoga z `git-autonomy-boundary.md` — **tryb auto nigdy nie znosi „go” przed pushem.**
+3. **„go” tylko poza zwykłym pushem** (decyzja autora 2026-10-07). Commit i push commitów łańcucha robi
+   `docs` sam, po checkliście. „go” jest potrzebne, gdy wychodzi commit spoza łańcucha, push został
+   odrzucony albo operacja na zdalnym repo nie jest pushem (nowe repo, remote, ustawienia GitHuba) —
+   `git-autonomy-boundary.md`. **Tryb auto nie znosi tego „go”.**
 
 ## Hard stops — independent of mode, cannot be removed
 
 - powód BLOCK z listy krytyka (gdy powstanie — ISSUE-003); do tego czasu: ryzyko utraty danych
   rodziny, dane rodziny w repo, fakt o rodzinie bez źródła, niespełnione AC, zmiana bez odbicia w vaulcie;
-- każda operacja git zmieniająca stan **poza commitem po checkliście** (push zawsze stop);
+- każda operacja git zmieniająca stan **poza commitem i pushem po checkliście** (force push, pull, rebase,
+  merge — zawsze stop);
 - odmowa strażnika danych rodziny przy `git add` albo `git commit`;
 - zmiana zakresu odkryta w trakcie — nigdy nie poszerzaj po cichu;
 - prawdziwe rozwidlenie decyzji, które należy do autora;

@@ -21,7 +21,7 @@ jest doświadczony (`kickoff/PROFILE.md`).
 ## On invocation
 
 1. `git status` w trzech repo (ścieżki z `.claude/rules/project-config.md`) — niezacommitowane zmiany
-   zgłoś na początku.
+   i commity, których nie ma na GitHubie (`git log --oneline origin/main..main`), zgłoś na początku.
 2. Przeczytaj `{vault}/00_START_HERE/CURRENT_STATE.md`: etap, co w toku, **licznik do retro**,
    **sprawy zaparkowane** (policz je i wymień warunki obudzenia — czy któryś mógł już nastąpić?).
 3. Przejrzyj `{vault}/backlog/` (frontmatter `status:`): `in-progress` najpierw, potem `ready` według
@@ -32,8 +32,9 @@ jest doświadczony (`kickoff/PROFILE.md`).
    które cmentarze nie mają pinezek?*
 5. Zakończ blokiem: **gdzie jesteśmy · czego potrzebuję (jedna rzecz) · co potem**.
 6. **Koniec sesji** (po zamknięciu pozycji albo gdy autor kończy — retro 1, R2): **co dalej** (jedna
-   pozycja i dlaczego) i jasne **„możesz kończyć sesję”**. Najpierw sprawdź `git status` trzech repo — jeśli
-   coś nie jest zapisane albo zacommitowane, powiedz wprost co i co z tym zrobić.
+   pozycja i dlaczego) i jasne **„możesz kończyć sesję”**. Najpierw sprawdź `git status` i
+   `git log origin/main..main` trzech repo — jeśli coś nie jest zapisane, zacommitowane albo wypchnięte,
+   powiedz wprost co i co z tym zrobić.
 7. **Dane rodziny w repo:** jeśli `git status --ignored` pokazuje w którymś repo pliki, których nie stworzył
    żaden agent (notatki, zdjęcia), zgłoś je na początku i zaproponuj przeniesienie do `family_data_dir`
    (`family-data.md`, R3). Wyjątek znany: `grobing-vault/05_DESIGN/brand/references/` — obrazy stylu B z

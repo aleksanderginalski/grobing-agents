@@ -30,7 +30,7 @@ gitignorowany) — na nowej maszynie skopiuj go z `project-config.example.md`.
 | `/planning` | Pozycja → plan w samej pozycji; punkt stopu #1 (intencja) |
 | `/dev` | Implementacja we Flutterze (`grobing-code`), bez testów |
 | `/qa` | Testy wg DoD (MVP), ręczna weryfikacja — do MVP na emulatorze (stop #2, dla autora tylko UI/UX) |
-| `/docs` | Strażnik vaulta — zamyka pozycje, DOC_MAP, macierz powiązań, licznik retro; **commituje paczkę pozycji po checkliście** (bez pytania; push tylko po „go”); wykonuje ISSUE-001 |
+| `/docs` | Strażnik vaulta — zamyka pozycje, DOC_MAP, macierz powiązań, licznik retro; **commituje i wypycha paczkę pozycji po checkliście** (bez pytania; „go” tylko poza zwykłym pushem); wykonuje ISSUE-001 |
 
 **Na sygnał, nie teraz:** `debug` (pierwszy błąd) · `discover`/`decompose`
 (pomysł spoza bieżącej pracy) · `ci` (pierwszy pipeline) · `architect` (decyzja wymagająca ADR-a poza
@@ -47,7 +47,8 @@ Krytyk `quality` — do zbudowania w ISSUE-003.
 ## Three things that are never negotiable here
 
 1. **Dane rodziny nigdy w żadnym repo** (`family-data.md`).
-2. **Bez „go" nie ma pushu; commit tylko jawnej listy plików pozycji, po checkliście**
-   (`git-autonomy-boundary.md`, decyzja autora 2026-10-06).
+2. **Commit tylko jawnej listy plików pozycji, po checkliście; push tylko commitów łańcucha, nigdy force;
+   wszystko inne na zdalnym repo po „go"** (`git-autonomy-boundary.md`, decyzje autora 2026-10-06 i
+   2026-10-07).
 3. **Globalny Flutter się nie aktualizuje** bez decyzji — SDK jest współdzielone z inną, wydaną
    aplikacją autora (`project-config.example.md`).

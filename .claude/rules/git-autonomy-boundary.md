@@ -4,15 +4,19 @@
 wszystkie trzy repozytoria Grobing (`grobing-agents`, `grobing-vault`, `grobing-code`).
 
 > **Zmiana 2026-10-06 (decyzja autora, retro 1 — R1):** commit lokalny agent robi **sam**, po checkliście
-> niżej. **Push i każda operacja na zdalnym repo nadal wymagają „go”.** Powód autora: przy commitach
-> zawsze akceptował, więc stop nic nie wnosił; commit lokalny cofa się jednym poleceniem, push do
-> publicznego repo nie.
+> niżej. Powód autora: przy commitach zawsze akceptował, więc stop nic nie wnosił.
+>
+> **Zmiana 2026-10-07 (decyzja autora, po pierwszym pushu):** **push też idzie sam**, zaraz po commicie
+> paczki, na warunkach niżej. Powód autora: na „go” zawsze odpowie „tak”, a w retro 1 chciał automatu dla
+> obu kroków. Zapis R1 („push tylko po „go””) tego nie oddał. Push do publicznego repo jest nieodwracalny,
+> dlatego jego warunki są ostrzejsze niż przy commicie, a kontrola treści musi się odbyć **przed `git add`**.
 
 ## Forbidden autonomously
 
-`git push`, `git pull`, `git fetch` z zapisem, `git rebase`, `git reset`, `git checkout`, `git merge`,
-`git commit --amend`, `git branch -D`, `git init`, `gh` i każda inna operacja zmieniająca stan VCS,
-**poza commitem z sekcji niżej**.
+`git push` poza sekcją *push* niżej · `git push --force` / `-f` / `--force-with-lease`, push gałęzi innej niż
+`main` i tagów — zawsze · `git pull`, `git fetch` z zapisem, `git rebase`, `git reset`, `git checkout`,
+`git merge`, `git commit --amend`, `git branch -D`, `git init`, `git remote add/set-url/remove`, `gh` i każda
+inna operacja zmieniająca stan VCS, **poza commitem i pushem z sekcji niżej**.
 
 ## Forbidden to propose
 
@@ -43,17 +47,35 @@ zrobić tylko wtedy, gdy **wszystkie** warunki są spełnione:
 
 Którykolwiek warunek niespełniony → **nie commituj**, wypisz, czego brakuje, i czekaj.
 
+## Allowed autonomously — push right after the package commit (2026-10-07)
+
+Push robi `docs` w tym samym kroku, zaraz po commicie paczki, w każdym repo, które dostało commit. Wolno
+tylko wtedy, gdy **wszystkie** warunki są spełnione:
+
+1. **Commit paczki przeszedł checklistę wyżej** — w tym strażnik i kontrola danych rodziny przed `git add`.
+2. **Wychodzą tylko commity łańcucha:** `git log --oneline origin/main..main` jest w odpowiedzi i każdy hash
+   jest w dzienniku łańcucha tej sesji. **Commit spoza łańcucha** (np. autora z VS Code, który chroni tylko
+   `.gitignore`) → STOP: pokaż go i czekaj na „go”.
+3. **Wyłącznie `git push origin main`** na istniejący `origin`, jako fast-forward. Push odrzucony (na
+   GitHubie jest coś, czego nie ma lokalnie) → STOP. Nigdy `pull`, `rebase`, `merge` ani `--force`, żeby
+   push przeszedł.
+4. **Po pushu** w dzienniku łańcucha: hash i „wypchnięte”. `git revert <hash>` z kolejnym pushem cofa
+   zmianę w kodzie, ale **treść zostaje w publicznej historii**. Dane rodziny w wypchniętym commicie to
+   incydent: STOP i natychmiast zgłoś autorowi.
+
+Którykolwiek warunek niespełniony → **nie pushuj**. Commit zostaje lokalnie, wypisz, czego brakuje.
+
 ## Allowed after explicit approval — the "go" stop-point
 
-Punkt stopu #3 z `autonomous-flow.md` dotyczy teraz **wyłącznie pushu** (i każdej operacji na zdalnym
-repo): agent pokazuje, co pójdzie (`git log origin/main..main`), i czeka na wyraźne **„go”**. Pierwszy
-push wymaga dodatkowo zamkniętego [[NT-008-publication-review]] (`family-data.md`).
+Punkt stopu #3 z `autonomous-flow.md` obejmuje wszystko na zdalnym repo, co **nie jest** pushem z sekcji
+wyżej: commit spoza łańcucha w `origin/main..main`, odrzucony push, nowe repo, zmiana remote'a, ustawienia
+repo na GitHubie. Agent pokazuje, co i dlaczego, i czeka na wyraźne **„go”**.
 
 ## Family data — part of this boundary
 
 Przed każdym `git add` sprawdź, że w zmianach **nie ma danych rodziny** (`family-data.md`). To jedyna
-nieodwracalna rzecz w tym projekcie: repo może dostać remote, a dane wypchnięte raz zostają w
-historii.
+nieodwracalna rzecz w tym projekcie: repo są publiczne, push idzie sam zaraz po commicie, a dane wypchnięte
+raz zostają w historii. **Ostatnia kontrola treści jest przed `git add`, nie przed pushem.**
 
 ## Pre-commit hook failure
 
