@@ -51,7 +51,9 @@ vault_local_path: ""                 # np. "C:\\Programowanie\\Grobing\\grobing-
 code_local_path: ""                  # np. "C:\\Programowanie\\Grobing\\grobing-code"
 release_keystore_dir: ""             # POZA każdym drzewem projektu; nigdy w repo (floor: no secrets in repo)
 family_data_dir: ""                  # np. "C:\\Programowanie\\Grobing\\_dane-rodziny" — POZA trzema repo i
-                                     # workspace'em; przystanek roboczy na notatki rodziny (family-data.md, R3)
+                                     # workspace'em; przystanek roboczy na notatki rodziny (family-data.md, R3).
+                                     # Tu leży też rdzenie-straznika.txt — lista autora dla strażnika treści
+                                     # (ISSUE-020); bez niej git add/commit są zablokowane
 ```
 
 Agenci resolwują `{vault}` i `{code}` z `project-config.md`. **Skille nie zawierają ścieżek

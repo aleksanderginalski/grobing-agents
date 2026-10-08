@@ -35,6 +35,13 @@ rozpoznaje typ pliku, nie treść. Commit z VS Code wpuściłby adresy do histor
   trzema repo i poza workspace'em**. To przystanek roboczy (notatki do przepisania, zdjęcia stron), a nie
   trwały dom: trwały dom to aplikacja, zaszyfrowana kopia i eksport u rodziny, a zdjęcia notatek trafiają
   do zaszyfrowanego miejsca ([[NT-001-photograph-the-notes]]).
+- **Lista rdzeni strażnika** (retro 2, R1; [[ISSUE-020-content-guard]]): `rdzenie-straznika.txt` w `family_data_dir`
+  — nazwiska, nazwiska z domu, małe miejscowości i cmentarze, jeden rdzeń w linii. Pisze ją autor albo agent **na
+  prośbę autora w sesji** (decyzja autora 2026-10-08: nazwiska w rozmowie z agentem są w porządku, chronimy to, co
+  trafia na GitHub, czyli kto i gdzie jest pochowany). Strażnik czyta ją przy każdym `git add`/`commit`. Odmowa
+  podaje plik, linię i numer linii listy, nigdy słowo. Fałszywe trafienie (np. publiczna nazwa) agent zgłasza
+  autorowi i rdzeń się zawęża. Strażnika się nie obchodzi.
+
 - **Agenci nie czytają `family_data_dir` bez wyraźnej prośby autora w tej sesji.** Gdy autor o to prosi
   (np. żeby `ui` dopasował formularz do układu notatek), do vaulta trafia **tylko struktura** (jakie pola,
   jak zapisane daty), nigdy dane.
@@ -53,7 +60,8 @@ otwartej którejś z tych pozycji, **zatrzymuje się i to mówi** — to twardy 
 | Mechanizm | Status | Czego NIE łapie |
 |---|---|---|
 | `.gitignore` w **trzech** repo — ten sam blok: bazy, kopie `*.age`/`*.tar`, eksporty `*.html`/`*.pdf`, zdjęcia i filmy, katalogi `/exports/` `/backups/` `/family-data/` `/real-data/` w korzeniu; w `grobing-code` wyjątek tylko dla obrazów w `android/app/src/main/res/` | **działa** (od dnia 1; lista z [[ISSUE-006-setup-family-data-guard]], 2026-10-05) | treści: nazwiska wpisanego w kod źródłowy albo w dokumentację · pliku dodanego siłą (`git add -f`) poza Claude'em. **To jedyna ochrona commitów autora z VS Code** |
-| hook `PreToolUse` — `.claude/hooks/family-data-guard.ps1` (T-05): odmawia zapisu plików z tej samej listy narzędziami Claude'a w trzech repo; odmawia `git add`/`git commit`, gdy taki plik mógłby wejść do commita; `git add -f` zawsze; **przy własnym błędzie, braku skryptu albo `project-config.md` blokuje** | **działa** — [[ISSUE-006-setup-family-data-guard]] | treści (rozpoznaje plik po typie i miejscu, nie po treści) · zapisu komendą powłoki (`cp`, `>`, `adb pull`) w chwili zapisu — łapie go dopiero przy `git add`/`commit` · commita autora z VS Code (tam działa tylko `.gitignore`) · edycji samego skryptu albo `.gitignore` (widać ją w `git diff --cached --stat` w odpowiedzi przed commitem, R1) |
+| hook `PreToolUse` — `.claude/hooks/family-data-guard.ps1` (T-05): odmawia zapisu plików z tej samej listy narzędziami Claude'a w trzech repo; odmawia `git add`/`git commit`, gdy taki plik mógłby wejść do commita; `git add -f` zawsze; **przy własnym błędzie, braku skryptu albo `project-config.md` blokuje** | **działa** — [[ISSUE-006-setup-family-data-guard]] | treści (rozpoznaje plik po typie i miejscu; treść z listy autora sprawdza wiersz niżej) · zapisu komendą powłoki (`cp`, `>`, `adb pull`) w chwili zapisu — łapie go dopiero przy `git add`/`commit` · commita autora z VS Code (tam działa tylko `.gitignore`) · edycji samego skryptu albo `.gitignore` (widać ją w `git diff --cached --stat` w odpowiedzi przed commitem, R1) |
+| strażnik treści — ten sam hook (ISSUE-020): przy `git add`/`git commit` odmawia, gdy rdzeń z listy autora zaczyna słowo w liniach dodanych do indeksu albo drzewa, w plikach nieśledzonych, w ich ścieżkach, w tekście komendy (opis commita) i w pliku z `-F`; bez polskich znaków i wielkości liter, także w camelCase. Brak listy, pusta lista albo rdzeń krótszy niż 3 znaki → blokada. Ręcznie: `-ScanTracked` przeszukuje śledzone pliki trzech repo | **działa** — [[ISSUE-020-content-guard]] | imion, kodów i numerów (nie ma ich na liście) · słowa spoza listy, literówki, odmiany zmieniającej rdzeń · linii usuniętych w starszych commitach i tego, co już wypchnięte · plików binarnych · commitów autora z VS Code · zapisu powłoką aż do `git add` |
 | commit agenta tylko z jawnej listy plików, które pozycja zapisała (R1) | **działa** od 2026-10-06 (`git-autonomy-boundary.md`) | pliku, który agent sam napisał z danymi w treści · commita autora z VS Code |
 | krytyk jakości — powód BLOCK „dane rodziny w repo" | **plan** — [[ISSUE-003-setup-quality-critic]] | tego, czego nie przeczyta |
 | ta reguła | **działa od dnia 1** (ładowana z `CLAUDE.md`) | czegokolwiek, czego agent nie zauważy — dlatego istnieją dwa powyższe |

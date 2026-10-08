@@ -1,5 +1,6 @@
 <#
-    family-data-guard.tests.ps1 -- tests for the family-data guard (ISSUE-006, written by qa).
+    family-data-guard.tests.ps1 -- tests for the family-data guard (ISSUE-006 files, ISSUE-020 content;
+    written by qa).
 
     RUN (from the grobing-agents root):
         powershell -NoProfile -File .claude/hooks/tests/family-data-guard.tests.ps1
@@ -10,6 +11,8 @@
         guard and its own project-config.md), vault, code -- with invented file names only;
       - feeds PreToolUse JSON to the guard, one powershell process per case, as the harness does;
       - runs the exact wrapper command from .claude/settings.json (AC-1);
+      - ISSUE-020: gives the throwaway setup its own family_data_dir with an INVENTED stem list and
+        checks every content refusal for a leak (the stem, the word or the line in the message);
       - checks THE LIST against .gitignore of the three REAL repos with read-only
         `git check-ignore --no-index`: a type added to the guard but not to .gitignore (or the other
         way round) fails here.
@@ -111,13 +114,43 @@ function Assert-Guard([string]$Name, $Result, [int]$Code, [string]$ErrLike = '')
     Assert-True $ok $Name "exit=$($Result.Code), want=$Code; stderr: $first"
 }
 
-function Write-TestConfig([string]$Vault, [string]$Code) {
+function Write-TestConfig([string]$Vault, [string]$Code, [switch]$NoFamily) {
     $lines = @(
         '# throwaway config for family-data-guard.tests.ps1',
         ('vault_local_path: "' + ($Vault -replace '\\', '\\') + '"'),
         ('code_local_path: "' + ($Code -replace '\\', '\\') + '"')
     )
+    if (-not $NoFamily) { $lines += ('family_data_dir: "' + ($Family -replace '\\', '\\') + '"') }
     [System.IO.File]::WriteAllText($Config, ($lines -join "`n"))
+}
+
+# ISSUE-020: the stem list of the throwaway setup -- INVENTED stems only. Line numbers matter:
+# 1 comment, 2 Zmyslonowsk, 3 empty, 4 Wymyslin, 5 a two-word stem. Polish letters as code points
+# (this file stays ASCII).
+$S = [char]0x015B   # s-acute
+$L = [char]0x0142   # l-stroke
+$StemsText = "# wymyslone rdzenie (testy)`nZmy${S}lonowsk`n`nWymy${S}lin`nStare Wymy${S}lone`n"
+# a stem, the word or the marker line text in stderr/stdout = the guard leaked what it must not
+$LeakPattern = '(?i)zmy\S{0,2}lonow|wymy\S{0,2}lin|stare\s+wymy|liniatajna'
+
+function Write-Stems([string]$Text) {
+    [System.IO.File]::WriteAllText($StemsFile, $Text)
+}
+
+function Write-TextFile([string]$Path, [string]$Text) {
+    New-Item -ItemType Directory -Force -Path (Split-Path -Parent $Path) | Out-Null
+    [System.IO.File]::WriteAllText($Path, $Text)
+}
+
+# Assert-Guard + the refusal names neither a stem nor the word nor the line.
+function Assert-Content([string]$Name, $Result, [int]$Code, [string]$ErrLike = '') {
+    Assert-Guard $Name $Result $Code $ErrLike
+    $text = $Result.Err + $Result.Out
+    Assert-True ($text -notmatch $LeakPattern) "$Name -- no word, stem or line in the message" ((($text -split "`n") | Select-Object -First 3) -join ' | ')
+}
+
+function Invoke-GitQuiet([string]$Repo, [string]$Arguments) {
+    Invoke-Git $Repo ('-c user.name=t -c user.email=t@example.invalid -c core.autocrlf=false ' + $Arguments)
 }
 
 function New-EmptyFile([string]$Path) {
@@ -133,14 +166,17 @@ $TmpCode = Join-Path $TmpRoot 'grobing-code'
 $Outside = Join-Path $TmpRoot 'outside'
 $Guard = Join-Path $TmpAgents '.claude/hooks/family-data-guard.ps1'
 $Config = Join-Path $TmpAgents '.claude/rules/project-config.md'
+$Family = Join-Path $TmpRoot 'family'
+$StemsFile = Join-Path $Family 'rdzenie-straznika.txt'
 
 try {
-    foreach ($d in @($TmpAgents, $TmpVault, $TmpCode, $Outside, (Join-Path $TmpAgents '.claude/hooks'), (Join-Path $TmpAgents '.claude/rules'))) {
+    foreach ($d in @($TmpAgents, $TmpVault, $TmpCode, $Outside, $Family, (Join-Path $TmpAgents '.claude/hooks'), (Join-Path $TmpAgents '.claude/rules'))) {
         New-Item -ItemType Directory -Force -Path $d | Out-Null
     }
     foreach ($d in @($TmpAgents, $TmpVault, $TmpCode)) { Invoke-Git $d 'init -q' }
     Copy-Item -LiteralPath $GuardSource -Destination $Guard
     Write-TestConfig $TmpVault $TmpCode
+    Write-Stems $StemsText
 
     Write-Host "`n[AC-2] repos from project-config.md, no absolute paths"
     $settingsText = [System.IO.File]::ReadAllText($SettingsPath, [System.Text.Encoding]::UTF8)
@@ -237,6 +273,108 @@ try {
     Invoke-Git $TmpVault 'rm --cached -q zapis.db'
     Remove-Item -LiteralPath (Join-Path $TmpVault 'zapis.db')
 
+    Write-Host "`n[ISSUE-020 AC-1] a stem from the list starts a word -> refused, without the word"
+    $noteA = Join-Path $TmpVault 'notes\a.md'
+    Write-TextFile $noteA "linia 1`nPani Zmy${S}lonowska by${L}a tu LINIATAJNA`n"
+    Assert-Content 'untracked file, Polish letters' (Invoke-Guard (New-ShellPayload 'git add notes/a.md')) 2 'grobing-vault/notes/a.md:2 (linia 2 listy)'
+    Remove-Item -LiteralPath $noteA
+    Write-TextFile (Join-Path $TmpCode 'lib\x.dart') "// ZMYSLONOWSKIEGO LINIATAJNA`n"
+    Invoke-Git $TmpCode 'add lib/x.dart'
+    Assert-Content 'staged, upper case, no diacritics' (Invoke-Guard (New-ShellPayload 'git commit -m x')) 2 'grobing-code/lib/x.dart:1 (linia 2 listy)'
+    Invoke-Git $TmpCode 'rm --cached -q lib/x.dart'
+    Remove-Item -LiteralPath (Join-Path $TmpCode 'lib\x.dart')
+    $doc = Join-Path $TmpVault 'doc.md'
+    Write-TextFile $doc "ok`n"
+    Invoke-Git $TmpVault 'add doc.md'
+    Write-TextFile $doc "ok`nx`nfinal testWymyslinska = 1 // LINIATAJNA`n"
+    Assert-Content 'working tree vs index, camelCase, line 3' (Invoke-Guard (New-ShellPayload 'git add doc.md')) 2 'grobing-vault/doc.md:3 (linia 4 listy)'
+    Write-TextFile $doc "ok`nzmyslonowski_test LINIATAJNA`n"
+    Assert-Content 'snake_case' (Invoke-Guard (New-ShellPayload 'git add doc.md')) 2 'grobing-vault/doc.md:2 (linia 2 listy)'
+    Write-TextFile $doc "ok`nna   Stare  `t Wymy${S}lone LINIATAJNA`n"
+    Assert-Content 'two-word stem, several spaces and a tab between' (Invoke-Guard (New-ShellPayload 'git add doc.md')) 2 'grobing-vault/doc.md:2 (linia 5 listy)'
+    Write-TextFile $doc "ok`nprzedzmyslonowski i niewymyslinowy`n"
+    Assert-Guard 'stem inside a word (not at its start) passes' (Invoke-Guard (New-ShellPayload 'git add doc.md')) 0
+    Invoke-Git $TmpVault 'rm --cached -q -f doc.md'
+    Remove-Item -LiteralPath $doc
+    Assert-Guard 'Write tool with the word in content passes (content is checked at git add, R1)' (Invoke-Guard @{ tool_name = 'Write'; tool_input = @{ file_path = (Join-Path $TmpCode 'lib\x.dart'); content = 'Zmyslonowska' }; cwd = $TmpAgents }) 0
+
+    Write-Host "`n[ISSUE-020 AC-2] the commit message"
+    Assert-Content 'git commit -m' (Invoke-Guard (New-ShellPayload "git commit -m 'Zmyslonowska LINIATAJNA'")) 2 'tekst komendy'
+    Assert-Content 'git commit -F - with a heredoc' (Invoke-Guard (New-ShellPayload "git commit -q -F - <<'EOF'`nopis Wymyslin LINIATAJNA`nEOF")) 2 '(linia 4 listy)'
+    $msg = Join-Path $Outside 'msg.txt'
+    Write-TextFile $msg "Opis`nZmyslonowsky LINIATAJNA`n"
+    Assert-Content 'git commit -F <file>' (Invoke-Guard (New-ShellPayload "git commit -F `"$msg`"")) 2 'plik opisu commita'
+    Assert-Guard 'git commit -F <missing file> -> refused (cannot check)' (Invoke-Guard (New-ShellPayload 'git commit -F brak.txt')) 2 'nie znalazlem pliku opisu'
+    Write-TextFile $msg "Zwykly opis`n"
+    Assert-Guard 'git commit -F <clean file> passes' (Invoke-Guard (New-ShellPayload "git commit -F `"$msg`"")) 0
+
+    Write-Host "`n[ISSUE-020 D5] a path with a stem is masked"
+    $named = Join-Path $TmpVault 'zmyslonowski-plik.md'
+    Write-TextFile $named "nic`n"
+    Assert-Content 'path refused, word masked' (Invoke-Guard (New-ShellPayload 'git add .')) 2 'nazwa pliku grobing-vault/***-plik.md'
+    Remove-Item -LiteralPath $named
+
+    Write-Host "`n[ISSUE-020 D3] binary files are not read (THE LIST covers family-data types)"
+    $bin = Join-Path $TmpCode 'tool\x.bin'
+    New-Item -ItemType Directory -Force -Path (Split-Path -Parent $bin) | Out-Null
+    [System.IO.File]::WriteAllBytes($bin, ([byte[]]@(0, 1, 2) + [System.Text.Encoding]::ASCII.GetBytes('Zmyslonowska')))
+    Assert-Guard 'binary untracked file passes' (Invoke-Guard (New-ShellPayload 'git add .')) 0
+    Remove-Item -LiteralPath $bin
+
+    Write-Host "`n[ISSUE-020 D1] list encodings"
+    $probe = Join-Path $TmpVault 'b.md'
+    Write-TextFile $probe "Zmy${S}lonowska LINIATAJNA`n"
+    [System.IO.File]::WriteAllBytes($StemsFile, [System.Text.Encoding]::GetEncoding(1250).GetBytes("Zmy${S}lonowsk`n"))
+    Assert-Content 'Windows-1250 list (Notepad ANSI)' (Invoke-Guard (New-ShellPayload 'git add b.md')) 2 '(linia 1 listy)'
+    [System.IO.File]::WriteAllText($StemsFile, "Zmy${S}lonowsk`n", (New-Object System.Text.UTF8Encoding($true)))
+    Assert-Content 'UTF-8 list with BOM' (Invoke-Guard (New-ShellPayload 'git add b.md')) 2 '(linia 1 listy)'
+    [System.IO.File]::WriteAllText($StemsFile, "Zmy${S}lonowsk`r`n", [System.Text.Encoding]::Unicode)
+    Assert-Content 'UTF-16 list with BOM, CRLF' (Invoke-Guard (New-ShellPayload 'git add b.md')) 2 '(linia 1 listy)'
+    Remove-Item -LiteralPath $probe
+    Write-Stems $StemsText
+
+    Write-Host "`n[ISSUE-020 D2] no usable list -> every git add/commit refused, nothing else changes"
+    Remove-Item -LiteralPath $StemsFile
+    Assert-Content 'no list: git add refused' (Invoke-Guard (New-ShellPayload 'git add .')) 2 'brak listy rdzeni'
+    Assert-Guard 'no list: other shell commands pass' (Invoke-Guard (New-ShellPayload 'ls -la')) 0
+    Assert-Guard 'no list: Write passes' (Invoke-Guard (New-Payload (Join-Path $TmpCode 'lib\x.dart'))) 0
+    Write-Stems "# tylko komentarz`n`n"
+    Assert-Content 'list without stems: refused' (Invoke-Guard (New-ShellPayload 'git add .')) 2 'nie ma zadnego rdzenia'
+    Write-Stems "Zmyslonowsk`nab`n"
+    Assert-Content 'stem shorter than 3: refused, names the list line' (Invoke-Guard (New-ShellPayload 'git add .')) 2 'linia 2 listy ma mniej niz 3'
+    Write-Stems $StemsText
+    Write-TestConfig $TmpVault $TmpCode -NoFamily
+    Assert-Guard 'no family_data_dir in config: refused' (Invoke-Guard (New-ShellPayload 'git add .')) 2 'brak wartosci family_data_dir'
+    Write-TestConfig $TmpVault $TmpCode
+    Assert-Guard 'usable list, clean repos: git add passes' (Invoke-Guard (New-ShellPayload 'git add .')) 0
+
+    Write-Host "`n[ISSUE-020 D7] -ScanTracked over tracked files"
+    Write-TextFile (Join-Path $TmpCode 'lib\clean.dart') "// zwykly tekst`n"
+    Invoke-Git $TmpCode 'add lib/clean.dart'
+    Invoke-GitQuiet $TmpCode 'commit -q -m clean'
+    $scan = Invoke-Process 'powershell' ('-NoProfile -NonInteractive -File "' + $Guard + '" -ScanTracked')
+    Assert-True ($scan.Code -eq 0 -and $scan.Out -match 'trafien: 0') 'scan without hits: exit 0' "exit=$($scan.Code); $($scan.Out)"
+    Write-TextFile (Join-Path $TmpCode 'lib\y.dart') "// a`n// Zmyslonowska LINIATAJNA`n"
+    Invoke-Git $TmpCode 'add lib/y.dart'
+    Invoke-GitQuiet $TmpCode 'commit -q -m y'
+    $scan = Invoke-Process 'powershell' ('-NoProfile -NonInteractive -File "' + $Guard + '" -ScanTracked')
+    Assert-True ($scan.Code -eq 1 -and $scan.Out -match [regex]::Escape('grobing-code/lib/y.dart:2 (linia 2 listy)')) 'scan with a hit: exit 1, file:line and list line' "exit=$($scan.Code); $($scan.Out)"
+    Assert-True ($scan.Out -notmatch $LeakPattern) 'scan output has no word, stem or line' $scan.Out
+    Invoke-Git $TmpCode 'rm -q lib/y.dart lib/clean.dart'
+    Invoke-GitQuiet $TmpCode 'commit -q -m cleanup'
+
+    Write-Host "`n[ISSUE-020 AC-3] cost of git add with the content check (info, median of 3)"
+    Write-Stems ((1..30 | ForEach-Object { "Wymyslonazwa$_" }) -join "`n")
+    Write-TextFile (Join-Path $TmpVault 'c.md') "zwykly tekst`n"
+    $times = @(1..3 | ForEach-Object {
+            $sw = [System.Diagnostics.Stopwatch]::StartNew()
+            $null = Invoke-Guard (New-ShellPayload 'git add c.md')
+            $sw.Stop(); $sw.ElapsedMilliseconds
+        }) | Sort-Object
+    Write-Host "  info  git add, 3 repos, 1 changed file, 30 stems: $($times -join ' / ') ms (median $($times[1]) ms)"
+    Remove-Item -LiteralPath (Join-Path $TmpVault 'c.md')
+    Write-Stems $StemsText
+
     Write-Host "`n[AC-1] the wrapper from settings.json: script first, missing script -> exit 2"
     $settings = $settingsText | ConvertFrom-Json
     $group = $settings.hooks.PreToolUse | Select-Object -First 1
@@ -252,6 +390,10 @@ try {
     }
     Assert-Guard 'wrapper + script: test.db refused' (Invoke-Wrapper $TmpAgents (New-Payload (Join-Path $TmpCode 'test.db'))) 2 'ODMOWA zapisu grobing-code/test.db'
     Assert-Guard 'wrapper + script: lib/x.dart passes' (Invoke-Wrapper $TmpAgents (New-Payload (Join-Path $TmpCode 'lib\x.dart'))) 0
+    $noteW = Join-Path $TmpVault 'notes\w.md'
+    Write-TextFile $noteW "Zmyslonowska LINIATAJNA`n"
+    Assert-Content 'wrapper + script: git add with a listed word refused (ISSUE-020)' (Invoke-Wrapper $TmpAgents (New-ShellPayload 'git add .')) 2 'grobing-vault/notes/w.md:1 (linia 2 listy)'
+    Remove-Item -LiteralPath $noteW
     $noScript = Join-Path $TmpRoot 'no-script'
     New-Item -ItemType Directory -Force -Path $noScript | Out-Null
     Assert-Guard 'wrapper, script missing: exit 2, never silence' (Invoke-Wrapper $noScript (New-Payload (Join-Path $TmpCode 'lib\x.dart'))) 2 'brak skryptu'
