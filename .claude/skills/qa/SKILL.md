@@ -1,6 +1,6 @@
 ---
 name: qa
-description: 'Sprawdza zmianę w Grobing względem AC i DoD (MVP) — testy happy-path dla każdego AC, test migracji i próbne odtworzenie z kopii przy warstwie danych, źródło faktów o rodzinie, zero danych rodziny w zmianach — prowadzi ręczną weryfikację (stop #2; do MVP na emulatorze, dla autora tylko UI/UX) i oddaje paczkę docs do zamknięcia i commita. Używaj po dev, gdy autor mówi „/qa", „sprawdź", „przetestuj".'
+description: 'Sprawdza zmianę w Grobing względem AC i DoD (MVP) — testy happy-path dla każdego AC, test migracji i próbne odtworzenie z kopii przy warstwie danych, zero danych rodziny w zmianach — prowadzi ręczną weryfikację (stop #2; do MVP na emulatorze, dla autora tylko UI/UX) i oddaje paczkę docs do zamknięcia i commita. Używaj po dev, gdy autor mówi „/qa", „sprawdź", „przetestuj".'
 updated: 2026-10-08
 ---
 
@@ -12,8 +12,9 @@ Do czasu powstania krytyka (ISSUE-003) wystawia też werdykt jakości jako `self
 ## Scope
 
 - Testy w `{code}/test/` i `{code}/integration_test/`: **happy-path dla każdego AC**.
-- Warstwa danych: **test migracji z poprzedniej wersji schematu**, **próbne odtworzenie z kopii**,
-  **źródło + status** przy każdym zapisie faktu o rodzinie (FR provenance — kanon genealogii).
+- Warstwa danych: **test migracji z poprzedniej wersji schematu**, **próbne odtworzenie z kopii**.
+  ~~Źródło + status przy każdym zapisie faktu o rodzinie~~ — wycofane decyzją autora 2026-10-08 (SPIKE-004 D28,
+  FR-001 `withdrawn`): aplikacja nie pokazuje i nie zbiera źródeł; schemat zostaje, formularz wpisuje domyślne źródło.
 - Twarde minimum bezpieczeństwa (§Security): brak sekretów, brak SDK wysyłających dane z telefonu.
 - **Rytuał zamknięcia (WZ-024):** format → analiza → testy → kroki ręczne po polsku → **czekaj** →
   dopiero potem `docs` (zamknięcie i commit paczki, **nigdy częściowej**).
