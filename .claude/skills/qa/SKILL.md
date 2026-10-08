@@ -1,7 +1,7 @@
 ---
 name: qa
 description: 'Sprawdza zmianę w Grobing względem AC i DoD (MVP) — testy happy-path dla każdego AC, test migracji i próbne odtworzenie z kopii przy warstwie danych, źródło faktów o rodzinie, zero danych rodziny w zmianach — prowadzi ręczną weryfikację (stop #2; do MVP na emulatorze, dla autora tylko UI/UX) i oddaje paczkę docs do zamknięcia i commita. Używaj po dev, gdy autor mówi „/qa", „sprawdź", „przetestuj".'
-updated: 2026-10-06
+updated: 2026-10-08
 ---
 
 # QA — testy, jakość, rytuał zamknięcia
@@ -32,7 +32,9 @@ Do czasu powstania krytyka (ISSUE-003) wystawia też werdykt jakości jako `self
    *Verification*; usterki → `dev`, zanim autor dostanie kroki. Kroki dla autora wyprowadzaj ze
    specyfikacji (UI/UX).
 4. **Punkt stopu #2:** kroki ręcznej weryfikacji po polsku, **do MVP na emulatorze**. Agent sam
-   uruchamia emulator i instaluje aplikację; autor tylko patrzy i klika. Kroki grupuj **według
+   uruchamia emulator i instaluje aplikację; autor tylko patrzy i klika. **Autor dostaje najwyżej 3 kroki
+   odczucia** (retro 2, R4); kroki „agent na emulatorze” z planu robisz **przed** stopem i dajesz zrzuty
+   (katalog tymczasowy sesji). Kroki grupuj **według
    miejsca** (terminal VS Code · plik w edytorze · emulator albo telefon · „napisz tutaj"). Czekaj na
    „ok" / „pomiń" (zapisz w pozycji) / opis błędu (→ `dev`). **Cisza ≠ pomiń.** Przy ekranach wizyty
    dopisz krok „czytelne w pełnym słońcu?" (NFR A2). To wyjątek, który wymaga prawdziwego telefonu i

@@ -1,7 +1,7 @@
 ---
 name: planning
 description: 'Zamienia jedną pozycję backlogu Grobing (ISSUE / SPIKE) w konkretny plan dla dev — zakres, pliki, mapowanie AC, kroki ręcznej weryfikacji — i zatrzymuje się na punkcie stopu #1 (intencja przed budową). Używaj, gdy autor mówi „zaplanuj ISSUE-NNN", „/planning", albo gdy pm startuje łańcuch.'
-updated: 2026-10-06
+updated: 2026-10-08
 ---
 
 # Planning — pozycja → plan dla dev
@@ -27,9 +27,13 @@ Meta-decyzja 2: plan wewnątrz issue, nie osobny plik).
 2. Sprawdź DoR. Niespełniony → nie planuj, powiedz, czego brakuje.
 3. Napisz *Implementation plan*, ustaw `status: in-progress`, uzupełnij kolumny Issue(s)/Issue Status
    w `TRACEABILITY.md`.
+   **Kroki ręczne w dwóch grupach** (retro 2, R4): „agent na emulatorze” (wszystko, co da się sprawdzić bez
+   człowieka; agent robi je przed stopem #2 i pokazuje zrzuty) i „autor: odczucie” — **najwyżej 3 kroki**, tylko
+   to, co czuje w ręce i na oku. Pozycja bez nowego ekranu → druga grupa pusta.
 4. **Punkt stopu #1:** zwięzły diff zakresu + scenariusz akceptacji → czekaj na „tak". **Przy pozycji z
    ekranem — dokładnie** (retro 1, R5): link do specyfikacji i, przy nowym ekranie, do makiety od `ui`;
-   decyzje projektowe i `⚠️ OPEN` ze specyfikacji wypisane wprost.
+   decyzje projektowe i `⚠️ OPEN` ze specyfikacji wypisane wprost. **Pozycja wybiera to, co widać** (retro 2,
+   R6) → kandydaci na emulatorze albo makiecie na tym stopie, przed rekomendacją, a nie po pomiarach.
 
 ## Output
 

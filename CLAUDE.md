@@ -33,8 +33,9 @@ gitignorowany) — na nowej maszynie skopiuj go z `project-config.example.md`.
 | `/docs` | Strażnik vaulta — zamyka pozycje, DOC_MAP, macierz powiązań, licznik retro; **commituje i wypycha paczkę pozycji po checkliście** (bez pytania; „go” tylko poza zwykłym pushem); wykonuje ISSUE-001 |
 
 **Na sygnał, nie teraz:** `debug` (pierwszy błąd) · `discover`/`decompose`
-(pomysł spoza bieżącej pracy) · `ci` (pierwszy pipeline) · `architect` (decyzja wymagająca ADR-a poza
-kick-offem; kick-off MD3c — sygnał już był, decyzja autora: `{vault}/00_START_HERE/CURRENT_STATE.md`).
+(pomysł spoza bieżącej pracy) · `ci` (pierwszy pipeline) · `architect` (**pierwszy ADR zastąpiony po
+akceptacji**; ADR-y do tego czasu pisze łańcuch `planning` → `docs` — retro 2, R7, zamiast sygnału z kick-offu MD3c,
+który już był).
 Krytyk `quality` — do zbudowania w ISSUE-003.
 
 ## Where things are

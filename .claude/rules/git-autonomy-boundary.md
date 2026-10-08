@@ -15,8 +15,10 @@ wszystkie trzy repozytoria Grobing (`grobing-agents`, `grobing-vault`, `grobing-
 
 `git push` poza sekcją *push* niżej · `git push --force` / `-f` / `--force-with-lease`, push gałęzi innej niż
 `main` i tagów — zawsze · `git pull`, `git fetch` z zapisem, `git rebase`, `git reset`, `git checkout`,
-`git merge`, `git commit --amend`, `git branch -D`, `git init`, `git remote add/set-url/remove`, `gh` i każda
-inna operacja zmieniająca stan VCS, **poza commitem i pushem z sekcji niżej**.
+`git merge`, `git commit --amend`, `git branch -D`, `git init`, `git remote add/set-url/remove`, `git rm` (także
+`--cached`), `git restore` (także `--staged`), `git stash`, `gh` i każda inna operacja zmieniająca stan VCS albo
+indeks, **poza commitem i pushem z sekcji niżej** (`git rm`/`restore`/`stash` wprost: retro 2, R2 — `dev` zmienił
+indeks `git rm --cached` w ISSUE-014).
 
 ## Forbidden to propose
 

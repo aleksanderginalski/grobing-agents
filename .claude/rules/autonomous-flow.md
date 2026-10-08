@@ -24,11 +24,15 @@ Zamknięcie `docs` idzie **przed** commitem, więc jedna pozycja to jeden commit
 1. **Intencja przed budową** (`planning`, przed `dev`): **lekko** — zwięzły diff zakresu + scenariusz
    akceptacji. **Przy pozycji z ekranem — dokładnie** (retro 1, R5): także specyfikacja i, przy nowym
    ekranie, makieta od `ui`, bo to na makiecie autor zmienia strukturę ekranów taniej niż w kodzie.
-   Czekaj na „tak" albo poprawki.
+   **Pozycja, która wybiera to, co widać** (źródło mapy, układ, wariant zdjęcia), pokazuje kandydatów na
+   emulatorze albo makiecie **tutaj, przed rekomendacją** (retro 2, R6: szkic w SPIKE-001 odwrócił rekomendację z
+   pomiarów). Czekaj na „tak" albo poprawki.
 2. **Ręczna weryfikacja — dokładnie** (`qa`, po testach): kroki **po polsku**, które może sprawdzić
    tylko człowiek — dla autora to **UI/UX, przepływ, który czuje użytkownik**; pozycję bez nowego ekranu
    agent sprawdza na emulatorze sam i zapisuje „kroki oddane agentowi” (decyzja autora 2026-10-06,
-   `DEFINITION_OF_DONE.md`). **Do MVP na emulatorze**; na telefonie tylko wyjątki z `DEFINITION_OF_DONE.md` (GPS
+   `DEFINITION_OF_DONE.md`). **Najwyżej 3 kroki odczucia** (retro 2, R4): wszystko, co da się sprawdzić bez
+   człowieka, agent robi na emulatorze **przed** stopem i pokazuje zrzuty.
+   **Do MVP na emulatorze**; na telefonie tylko wyjątki z `DEFINITION_OF_DONE.md` (GPS
    na miejscu, słońce, offline na cmentarzu), wyłącznie w buildzie release (decyzja autora
    2026-10-05). Kroki pogrupowane **według miejsca**: terminal VS Code · plik w edytorze · emulator albo
    telefon · „napisz tutaj". Trzy odpowiedzi: **„ok"** · **„pomiń"** (zapisane, nie blokuje) ·

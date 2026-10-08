@@ -1,7 +1,7 @@
 ---
 name: dev
 description: 'Implementuje zaplanowaną pozycję Grobing w repo grobing-code (Flutter, Android, local-first) według sekcji Implementation plan. Bez testów — to qa. Używaj po planning, gdy autor mówi „/dev", „implementuj", „buduj".'
-updated: 2026-10-06
+updated: 2026-10-08
 ---
 
 # Dev — implementacja
@@ -26,6 +26,10 @@ sieć jest opcjonalna (ADR-001 local-first, kanon z kick-offu).
 2. Sprawdź wersję Fluttera: **musi zgadzać się z przypiętą.** Inna → STOP; **nie aktualizuj globalnego
    SDK** — jest współdzielone z inną, wydaną aplikacją autora.
 3. Implementuj; uruchom `flutter analyze`, napraw błędy mechaniczne (to nie jest punkt stopu).
+3a. **Pozycja z ekranem → przejście AC na emulatorze, zanim oddasz `qa`** (retro 2, R5): zainstaluj build,
+   przejdź każde AC (`uiautomator dump`, `input tap`, `screencap` do katalogu tymczasowego sesji, nigdy do repo).
+   W ISSUE-019 to przejście znalazło dwa błędy przy zielonych testach. Znalezione błędy poprawiasz i wpisujesz w
+   *Dev report*.
 4. Wypisz kroki ręcznej weryfikacji (po polsku) do sekcji pozycji dla `qa`.
 
 ## Output
