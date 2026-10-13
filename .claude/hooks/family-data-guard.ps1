@@ -614,7 +614,7 @@ try {
                 "${Tag}: ODMOWA 'git add/commit' -- w repo leza pliki, ktore wygladaja na dane rodziny i moglyby wejsc do commita:"
             ) + $found + @(
                 "Przenies je poza repo albo usun -- dane rodziny zyja tylko w telefonie, w zaszyfrowanej kopii i w eksporcie u rodziny ($RuleRef).",
-                'Plik juz w indeksie wyjmuje sie z niego (git restore --staged) -- to zmiana stanu git, wiec agent najpierw pyta autora. Wyjatkow nie dopisuj bez decyzji autora.'
+                'Plik juz w indeksie wyjmuje sie z niego (git restore --staged) -- to zmiana stanu git: wykonuje ja autor w terminalu VS Code (command-guard, ISSUE-031). Wyjatkow nie dopisuj bez decyzji autora.'
             ) -join "`n")
         }
 

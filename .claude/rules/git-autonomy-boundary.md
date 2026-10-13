@@ -20,6 +20,14 @@ wszystkie trzy repozytoria Grobing (`grobing-agents`, `grobing-vault`, `grobing-
 indeks, **poza commitem i pushem z sekcji niżej** (`git rm`/`restore`/`stash` wprost: retro 2, R2 — `dev` zmienił
 indeks `git rm --cached` w ISSUE-014).
 
+**Co to łapie — hook `command-guard.ps1`** (ISSUE-031, retro 3 R1 — `git add -N .` i `git reset` w ISSUE-028 mimo tej
+reguły). Przy każdej komendzie Bash i PowerShell przepuszcza z gita tylko **listę dozwolonych**: odczyt z sekcji
+*Always allowed* (i pokrewne: `show`, `rev-parse`, `ls-files`…), `git add` jawnych plików, `git commit` bez `--amend`,
+`-a` i `--no-verify`, `git push origin main`. Wszystko inne, także `gh`, dostaje odmowę od razu, przy próbie — również
+w `&&`, `$(…)`, `bash -c` i z `-C`/`-c`. **Nie łapie:** komendy złożonej w locie (`eval`, nazwa w zmiennej), skryptu z
+pliku, który sam woła gita, `cmd /c`, komend autora w VS Code. **Komendy „po go”** (`git init`, `git remote`, `gh`)
+hook blokuje zawsze — po „go” agent podaje dokładną komendę, a wykonuje ją autor w terminalu VS Code.
+
 ## Forbidden to propose
 
 W planach i „następnych krokach”: otwieranie PR, issues, komentarzy, release'ów, uruchamianie CI —
