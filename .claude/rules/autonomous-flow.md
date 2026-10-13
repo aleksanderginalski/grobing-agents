@@ -45,8 +45,9 @@ Zamknięcie `docs` idzie **przed** commitem, więc jedna pozycja to jeden commit
 
 ## Hard stops — independent of mode, cannot be removed
 
-- powód BLOCK z listy krytyka (gdy powstanie — ISSUE-003); do tego czasu: ryzyko utraty danych
-  rodziny, dane rodziny w repo, fakt o rodzinie bez źródła, niespełnione AC, zmiana bez odbicia w vaulcie;
+- powód BLOCK z listy krytyka (gdy powstanie — ISSUE-003, odłożony do sygnału, retro 3 R10); do tego czasu: ryzyko
+  utraty danych rodziny, dane rodziny w repo, niespełnione AC, zmiana bez odbicia w vaulcie (powód „fakt o rodzinie
+  bez źródła” wycofany po SPIKE-004 D28 — decyzja autora, retro 3 R6);
 - każda operacja git zmieniająca stan **poza commitem i pushem po checkliście** (force push, pull, rebase,
   merge — zawsze stop);
 - odmowa strażnika danych rodziny przy `git add` albo `git commit`;

@@ -1,7 +1,7 @@
 ---
 name: docs
 description: 'Strażnik vaulta Grobing — zamyka pozycje, aktualizuje CURRENT_STATE, DOC_MAP, macierz powiązań i licznik retro, tworzy foldery wg reguły doc-growth, commituje paczkę pozycji po checkliście i wypycha ją na GitHub („go” tylko poza zwykłym pushem), wykonuje ISSUE-001 (materializacja backlogu z briefu). Używaj po qa, gdy autor mówi „/docs", „zamknij pozycję", „zaktualizuj dokumentację", „dograj backlog".'
-updated: 2026-10-07
+updated: 2026-10-13
 ---
 
 # Docs — strażnik vaulta
@@ -13,6 +13,13 @@ i żeby vault rósł bez śmietnika (`doc-growth.md`).
 
 - Zamknięcie pozycji: `status: done`, `CURRENT_STATE.md` (co w toku, ostatnio zrobione, **licznik do
   retro +1**, sprawy zaparkowane), kolumny EPIC/US/Story Status w `TRACEABILITY.md`.
+- **Rzeczy niesprawdzone w ręce** (retro 3, R8): przy zamknięciu każde „pomiń”, „ok” bez śladu na urządzeniu i
+  „nieprzetestowane na żywo” z *Verification* → jeden wiersz ze źródłem w [[ISSUE-032-mvp-install]] → *Hand checks*.
+  W *Recently done* tylko odsyłacz, nie druga kopia listy.
+- **Retro** (decyzje autora): plik w `07_RETRO/`, licznik → 0 i **przeniesienie *Recently done*** (retro 3, R5): wpisy,
+  które retro rozliczyło, idą bez zmian do jego sekcji *Archive*; w `CURRENT_STATE.md` zostaje tylko wpis retro. Rzeczy
+  żywe z „Dla autora” (emulatory, pliki do kosza, fakty o repo) przenosisz wcześniej do *In progress* albo *Autor, poza
+  sesją*. Powód: plik urósł do ok. 41 tys. tokenów, a odczyt obcinał go w połowie.
 - Nowe foldery **tylko na sygnał** z `doc-growth.md`, zawsze z wierszem w `DOC_MAP.md`.
 - Wykonuje [[ISSUE-001-materialize-backlog]] (EPIC-i, persony, ADR-y z briefu).
 - **Commit paczki pozycji** po zamknięciu, bez pytania, według checklisty z `git-autonomy-boundary.md`
@@ -32,7 +39,7 @@ i żeby vault rósł bez śmietnika (`doc-growth.md`).
    - `git add` jawnej listy plików, które ta pozycja zapisała we wszystkich repo — plik, którego żaden agent
      nie stworzył, zostaje i jest zgłoszony autorowi;
    - `git diff --cached --stat` w odpowiedzi; strażnik danych rodziny musi przejść;
-   - jeden commit na repo, z message'em „ISSUE-NNN: …” i stopką z atrybucją;
+   - jeden commit na repo, z message'em „ISSUE-NNN: …” (retro: „Retro N (R…): …”) i stopką z atrybucją;
    - w dzienniku łańcucha hash każdego commita i sposób cofnięcia (`git revert <hash>`).
    
    Warunek niespełniony → nie commituj, wypisz braki, czekaj.

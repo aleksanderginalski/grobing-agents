@@ -1,13 +1,14 @@
 ---
 name: qa
 description: 'Sprawdza zmianę w Grobing względem AC i DoD (MVP) — testy happy-path dla każdego AC, test migracji i próbne odtworzenie z kopii przy warstwie danych, zero danych rodziny w zmianach — prowadzi ręczną weryfikację (stop #2; do MVP na emulatorze, dla autora tylko UI/UX) i oddaje paczkę docs do zamknięcia i commita. Używaj po dev, gdy autor mówi „/qa", „sprawdź", „przetestuj".'
-updated: 2026-10-08
+updated: 2026-10-13
 ---
 
 # QA — testy, jakość, rytuał zamknięcia
 
 Udowadnia, że zmiana działa i jest skończona według `DEFINITION_OF_DONE.md` (kolumna MVP).
-Do czasu powstania krytyka (ISSUE-003) wystawia też werdykt jakości jako `self-check`.
+Do czasu powstania krytyka (ISSUE-003, odłożony do sygnału — retro 3, R10) wystawia też werdykt jakości jako
+`self-check`.
 
 ## Scope
 
@@ -25,8 +26,18 @@ Do czasu powstania krytyka (ISSUE-003) wystawia też werdykt jakości jako `self
 
 1. Przeczytaj pozycję (AC, plan, kroki ręczne od `dev`) i DoD.
 2. Napisz brakujące testy; uruchom `flutter test`; błędy mechaniczne napraw sam.
+2a. **Pozycja z ekranem → testy dostępności dotyku** (retro 3, R2). W teście widżetu każdego nowego albo zmienionego
+   ekranu: `expect(tester, meetsGuideline(androidTapTargetGuideline))` i `meetsGuideline(labeledTapTargetGuideline)`
+   (`flutter_test`, `accessibility.dart`) oraz reguła własna: **każdy węzeł semantyki z flagą przycisku ma akcję
+   dotknięcia**. Ten błąd był sześć razy (ISSUE-017 … ISSUE-028) i łapał go dopiero przegląd. Czego nie złapie: węzła
+   zlanego z arkuszem przez brak `container` — to przejście AC `dev` (`uiautomator`).
 3. Sprawdź zmiany pod kątem danych rodziny (`family-data.md`): pliki `*.db`, `*.sqlite*`, eksporty,
-   kopie, zdjęcia, prawdziwe imiona w fixture'ach.
+   kopie, zdjęcia, prawdziwe imiona w fixture'ach; nazwiska i miejscowości w przykładach tylko z rdzeni jawnie
+   wymyślonych (retro 3, R7).
+3b. **Pozycja z siecią → logcat buildu release bez współrzędnych i adresów** (retro 3, R7). Po przejściu na emulatorze
+   `adb logcat -d` przeszukaj pod kątem liczb o kształcie współrzędnych i adresów z `lib/net/hosts.dart`; trafienie to
+   usterka do `dev`. W ISSUE-027 `flutter_map` pisał adres kafelka (miejsce cmentarza) do logcat także w release —
+   znalezione przypadkiem.
 3a. **Pozycja z ekranem → przegląd `ui` przed stopem #2.** Zrób zrzuty ekranu z emulatora (`adb`, do
    katalogu tymczasowego sesji — nigdy do repo) w stanach ze specyfikacji, wywołaj `ui` w trybie
    przeglądu jako **subagenta bez historii** (pozycja + specyfikacja + ścieżki zrzutów). Wynik wpisz w
@@ -40,7 +51,9 @@ Do czasu powstania krytyka (ISSUE-003) wystawia też werdykt jakości jako `self
    „ok" / „pomiń" (zapisz w pozycji) / opis błędu (→ `dev`). **Cisza ≠ pomiń.** Przy ekranach wizyty
    dopisz krok „czytelne w pełnym słońcu?" (NFR A2). To wyjątek, który wymaga prawdziwego telefonu i
    buildu release (`DEFINITION_OF_DONE.md`).
-5. Zapisz wynik w sekcji *Verification* pozycji + `quality-verdict` (`verdict-reviewer: self-check`).
+5. Zapisz wynik w sekcji *Verification* pozycji + `quality-verdict` (`verdict-reviewer: self-check`). Każde
+   „pomiń”, „ok” bez śladu na urządzeniu i „nieprzetestowane na żywo” wypisz **osobno, po jednym w linii** — `docs`
+   przenosi je na listę [[ISSUE-032-mvp-install]] → *Hand checks* (retro 3, R8).
 6. **Lista paczki dla `docs`:** wszystkie pliki, które ta pozycja zapisała (kod, testy, wygenerowane,
    vault). `docs` commituje dokładnie tę listę i wypycha ją na GitHub (`git-autonomy-boundary.md`). Stopu
    przed commitem ani pushem nie ma (retro 1, R1; decyzja autora 2026-10-07), więc kontrola danych rodziny

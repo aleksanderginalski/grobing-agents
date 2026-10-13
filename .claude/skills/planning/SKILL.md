@@ -1,7 +1,7 @@
 ---
 name: planning
 description: 'Zamienia jedną pozycję backlogu Grobing (ISSUE / SPIKE) w konkretny plan dla dev — zakres, pliki, mapowanie AC, kroki ręcznej weryfikacji — i zatrzymuje się na punkcie stopu #1 (intencja przed budową). Używaj, gdy autor mówi „zaplanuj ISSUE-NNN", „/planning", albo gdy pm startuje łańcuch.'
-updated: 2026-10-08
+updated: 2026-10-13
 ---
 
 # Planning — pozycja → plan dla dev
@@ -14,7 +14,8 @@ Meta-decyzja 2: plan wewnątrz issue, nie osobny plik).
 - Zakres jednego komponentu (`delivery-style: task-level`), pliki prawdopodobnie dotknięte, mapowanie
   na AC, kroki ręcznej weryfikacji **po polsku** dla punktu stopu #2.
 - Przy pozycji dotykającej warstwy danych dopisuje do planu: **test migracji** (jeśli zmienia się
-  schemat), **próbne odtworzenie z kopii**, zapis **źródła i statusu** dla faktów o rodzinie.
+  schemat), **próbne odtworzenie z kopii**. ~~Zapis źródła i statusu dla faktów o rodzinie~~ — wycofane po
+  SPIKE-004 D28 (retro 3, R6).
 - **Does NOT:** pisze kodu ani testów, nie zmienia zakresu po cichu, nie zamyka pozycji.
 
 ## On invocation
@@ -34,6 +35,9 @@ Meta-decyzja 2: plan wewnątrz issue, nie osobny plik).
    ekranem — dokładnie** (retro 1, R5): link do specyfikacji i, przy nowym ekranie, do makiety od `ui`;
    decyzje projektowe i `⚠️ OPEN` ze specyfikacji wypisane wprost. **Pozycja wybiera to, co widać** (retro 2,
    R6) → kandydaci na emulatorze albo makiecie na tym stopie, przed rekomendacją, a nie po pomiarach.
+   **Pozycja o danych rodziny** (ich ochrona, kopia, eksport, przeniesienie) → na tym stopie pytanie **„przed czym
+   chronimy?”**, zanim plan założy model zagrożenia (retro 3, R7). W ISSUE-020 plan założył, że nazwiska nie mogą
+   trafić do rozmowy z agentem, a autor chronił tylko publikację na GitHubie — runda i edycja reguły.
 
 ## Output
 
@@ -63,7 +67,7 @@ Trafienie → **STOP**, opcje, czekaj.
 1. **Kompletność** — zakres, pliki, AC, kroki ręczne, sekcja *Out of Scope* niepusta.
 2. **Spójność** — plan wynika z pozycji i briefu; nic nie dopisane, żeby zapchać lukę.
 3. **Własność** — pisałeś tylko swoją sekcję, `status: in-progress` i swoje kolumny macierzy.
-4. **Warstwa danych** — jeśli pozycja jej dotyka: migracja, odtworzenie i źródło faktu są w planie.
+4. **Warstwa danych** — jeśli pozycja jej dotyka: migracja i odtworzenie są w planie.
    To jedyne, czego potem nikt nie dopisze.
 5. **Wystarczalność** — czego jeszcze ta pozycja potrzebuje, a czego nie ma w planie? Powiedz na głos.
 6. **Pass** → punkt stopu #1. **Fail** → zostaw `ready`, wypisz braki.

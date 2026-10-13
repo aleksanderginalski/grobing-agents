@@ -36,7 +36,8 @@ gitignorowany) — na nowej maszynie skopiuj go z `project-config.example.md`.
 (pomysł spoza bieżącej pracy) · `ci` (pierwszy pipeline) · `architect` (**pierwszy ADR zastąpiony po
 akceptacji**; ADR-y do tego czasu pisze łańcuch `planning` → `docs` — retro 2, R7, zamiast sygnału z kick-offu MD3c,
 który już był).
-Krytyk `quality` — do zbudowania w ISSUE-003.
+Krytyk `quality` — odłożony do sygnału (ISSUE-003, retro 3 R10): pierwsza usterka po zamknięciu pozycji, którą
+przepuściły `qa` i przegląd `ui`.
 
 ## Where things are
 

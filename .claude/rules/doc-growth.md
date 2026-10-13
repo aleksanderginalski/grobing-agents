@@ -24,7 +24,7 @@ wiersza i wiersz bez folderu to dwa pierwsze objawy śmietnika.
 | Pierwszy ekran do zaprojektowania | `05_DESIGN/` | wireframe'y, specyfikacje ekranów |
 | Pierwsza warstwa wizualna (styl B) | `05_DESIGN/brand/` | wytyczne, system wizualny |
 | Pierwszy temat prawny / kosztowy | `06_NON_TECH/` | weryfikacje prawne, rejestr kosztów `external-costs.md` |
-| Pierwsze retro | `07_RETRO/` | retro co 10 zamkniętych pozycji |
+| Pierwsze retro | `07_RETRO/` | retro co 10 zamkniętych pozycji; od retro 3 (R5) także *Archive* — wpisy *Recently done*, które to retro rozliczyło |
 
 > Numery są etykietą, nie obietnicą — **folder z numerem powstaje dopiero na sygnał**. Wstawiając
 > nowy, nie przenumerowuj istniejących; dopisz kolejny wolny numer i wiersz w DOC_MAP.
@@ -45,7 +45,7 @@ wiersza i wiersz bez folderu to dwa pierwsze objawy śmietnika.
 | Mechanizm | Status |
 |---|---|
 | ta reguła + self-check `docs` | **działa od dnia 1** |
-| check DOC_MAP ↔ dysk przy zapisie i na starcie sesji (Meta-dec. 3g) | **plan** — [[ISSUE-004-setup-freshness-gate]] |
+| check DOC_MAP ↔ dysk przy zapisie i na starcie sesji (Meta-dec. 3g) | **odłożony do sygnału** — [[ISSUE-004-setup-freshness-gate]] (retro 3, R10: pierwszy rozjazd znaleziony po fakcie) |
 | pytanie o nośne fakty co 10 zamkniętych pozycji | **działa od dnia 1** (licznik w `CURRENT_STATE.md`, pilnuje `pm`) |
 
 **Czego nic tu nie złapie:** dokumentu we właściwym folderze z nieaktualną treścią i decyzji, której

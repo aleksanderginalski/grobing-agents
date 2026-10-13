@@ -1,7 +1,7 @@
 ---
 name: dev
 description: 'Implementuje zaplanowaną pozycję Grobing w repo grobing-code (Flutter, Android, local-first) według sekcji Implementation plan. Bez testów — to qa. Używaj po planning, gdy autor mówi „/dev", „implementuj", „buduj".'
-updated: 2026-10-08
+updated: 2026-10-13
 ---
 
 # Dev — implementacja
@@ -29,7 +29,16 @@ sieć jest opcjonalna (ADR-001 local-first, kanon z kick-offu).
 3a. **Pozycja z ekranem → przejście AC na emulatorze, zanim oddasz `qa`** (retro 2, R5): zainstaluj build,
    przejdź każde AC (`uiautomator dump`, `input tap`, `screencap` do katalogu tymczasowego sesji, nigdy do repo).
    W ISSUE-019 to przejście znalazło dwa błędy przy zielonych testach. Znalezione błędy poprawiasz i wpisujesz w
-   *Dev report*.
+   *Dev report*. **Stała lista przejścia** (retro 3, R3 — przegląd `ui` znalazł MAJOR po zielonych testach w 7 z 7
+   pozycji z ekranem, bo przejście szło główną drogą):
+   - **każdy stan z *States*** specyfikacji, nie tylko główna droga — każdy ze zrzutem (ISSUE-029: 3 MAJOR w stanach
+     bez kropki, bez mapy, bez sieci);
+   - **tekst 200% na ekranie 360 dp** (`font_scale 2.0`, `wm size`/`wm density`), a przy zdjęciach także zdjęcie w
+     sepii (ISSUE-024: 4 MAJOR);
+   - **semantyka i cel dotyku** w `uiautomator dump`: przycisk jest `clickable`, a granice węzła to granice
+     elementu, nie całego arkusza (ISSUE-023, ISSUE-027, ISSUE-028);
+   - **nowa warstwa mapy albo duże dane → pomiar czasu klatki w buildzie profile**, zanim padnie słowo „emulator”
+     (ISSUE-023: wolne klatki uznane za winę emulatora, a był to błąd ok. 600× i ANR przy starcie).
 4. Wypisz kroki ręcznej weryfikacji (po polsku) do sekcji pozycji dla `qa`.
 
 ## Output
@@ -64,5 +73,6 @@ Trafienie → **STOP**, opcje, czekaj.
 2. **Spójność** — kod robi to, co plan, i nic poza nim.
 3. **Własność** — nie dotknąłeś testów, vaulta ani `kickoff/`.
 4. **Dane rodziny i warstwa danych** — zero prawdziwych danych w zmianach; zmiana schematu ma
-   migrację; fakt o rodzinie zapisuje źródło i status.
+   migrację. ~~Fakt o rodzinie zapisuje źródło i status~~ — wycofane po SPIKE-004 D28 (retro 3, R6): formularz
+   wpisuje domyślne źródło, schemat zostaje.
 5. **Pass** → kroki ręczne wypisane, hand-off do `qa`. **Fail** → wypisz, czego brakuje.
