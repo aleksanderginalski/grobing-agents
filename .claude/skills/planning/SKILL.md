@@ -1,7 +1,7 @@
 ---
 name: planning
 description: 'Zamienia jedną pozycję backlogu Grobing (ISSUE / SPIKE) w konkretny plan dla dev — zakres, pliki, mapowanie AC, kroki ręcznej weryfikacji — i zatrzymuje się na punkcie stopu #1 (intencja przed budową). Używaj, gdy autor mówi „zaplanuj ISSUE-NNN", „/planning", albo gdy pm startuje łańcuch.'
-updated: 2026-10-13
+updated: 2026-10-16
 ---
 
 # Planning — pozycja → plan dla dev
@@ -38,6 +38,9 @@ Meta-decyzja 2: plan wewnątrz issue, nie osobny plik).
    **Pozycja o danych rodziny** (ich ochrona, kopia, eksport, przeniesienie) → na tym stopie pytanie **„przed czym
    chronimy?”**, zanim plan założy model zagrożenia (retro 3, R7). W ISSUE-020 plan założył, że nazwiska nie mogą
    trafić do rozmowy z agentem, a autor chronił tylko publikację na GitHubie — runda i edycja reguły.
+   **Decyzja z obrazem** (retro 4, R1): link do makiety albo prototypu **zawsze jako `file:///C:/…`** (`%TEMP%` się nie
+   otwiera — ISSUE-034); wybór techniki opisany tym, **co autor zobaczy i zrobi**, nie nazwą techniki (ISSUE-034:
+   „przesyłanie” znaczyło dla autora co innego). Na stopie jedno pytanie albo jawne „na które odpowiadasz?” (R6).
 
 ## Output
 

@@ -1,7 +1,7 @@
 ---
 name: docs
 description: 'Strażnik vaulta Grobing — zamyka pozycje, aktualizuje CURRENT_STATE, DOC_MAP, macierz powiązań i licznik retro, tworzy foldery wg reguły doc-growth, commituje paczkę pozycji po checkliście i wypycha ją na GitHub („go” tylko poza zwykłym pushem), wykonuje ISSUE-001 (materializacja backlogu z briefu). Używaj po qa, gdy autor mówi „/docs", „zamknij pozycję", „zaktualizuj dokumentację", „dograj backlog".'
-updated: 2026-10-13
+updated: 2026-10-16
 ---
 
 # Docs — strażnik vaulta
@@ -14,8 +14,9 @@ i żeby vault rósł bez śmietnika (`doc-growth.md`).
 - Zamknięcie pozycji: `status: done`, `CURRENT_STATE.md` (co w toku, ostatnio zrobione, **licznik do
   retro +1**, sprawy zaparkowane), kolumny EPIC/US/Story Status w `TRACEABILITY.md`.
 - **Rzeczy niesprawdzone w ręce** (retro 3, R8): przy zamknięciu każde „pomiń”, „ok” bez śladu na urządzeniu i
-  „nieprzetestowane na żywo” z *Verification* → jeden wiersz ze źródłem w [[ISSUE-032-mvp-install]] → *Hand checks*.
-  W *Recently done* tylko odsyłacz, nie druga kopia listy.
+  „nieprzetestowane na żywo” z *Verification* → jeden wiersz ze źródłem w [[ISSUE-032-mvp-install]] → *Hand checks*, **w liście
+  A** (kopia, odtworzenie, aktualizacja, migracja — bramka przed prawdziwymi danymi) **albo B** (odczucie — w trakcie używania, bez
+  bramki; retro 4, R4). W *Recently done* tylko odsyłacz, nie druga kopia listy.
 - **Retro** (decyzje autora): plik w `07_RETRO/`, licznik → 0 i **przeniesienie *Recently done*** (retro 3, R5): wpisy,
   które retro rozliczyło, idą bez zmian do jego sekcji *Archive*; w `CURRENT_STATE.md` zostaje tylko wpis retro. Rzeczy
   żywe z „Dla autora” (emulatory, pliki do kosza, fakty o repo) przenosisz wcześniej do *In progress* albo *Autor, poza

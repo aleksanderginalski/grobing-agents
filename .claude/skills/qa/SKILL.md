@@ -1,7 +1,7 @@
 ---
 name: qa
 description: 'Sprawdza zmianę w Grobing względem AC i DoD (MVP) — testy happy-path dla każdego AC, test migracji i próbne odtworzenie z kopii przy warstwie danych, zero danych rodziny w zmianach — prowadzi ręczną weryfikację (stop #2; do MVP na emulatorze, dla autora tylko UI/UX) i oddaje paczkę docs do zamknięcia i commita. Używaj po dev, gdy autor mówi „/qa", „sprawdź", „przetestuj".'
-updated: 2026-10-13
+updated: 2026-10-16
 ---
 
 # QA — testy, jakość, rytuał zamknięcia
@@ -25,7 +25,10 @@ Do czasu powstania krytyka (ISSUE-003, odłożony do sygnału — retro 3, R10) 
 ## On invocation
 
 1. Przeczytaj pozycję (AC, plan, kroki ręczne od `dev`) i DoD.
-2. Napisz brakujące testy; uruchom `flutter test`; błędy mechaniczne napraw sam.
+2. Napisz brakujące testy; uruchom `flutter test --timeout 120s` (retro 4, R5 — w ISSUE-036 pełny przebieg zawisł 13 min bez
+   wskazania testu; z limitem zawieszenie nazywa test); błędy mechaniczne napraw sam. W testach z kilkoma trasami na stosie szukaj
+   w trasie: `find.descendant(of: <ekran>, matching: …)` — w ISSUE-039 `find.text` trafiał w kartę drzewa pod ekranem wyboru i
+   siedem testów padło z mylącymi powodami.
 2a. **Pozycja z ekranem → testy dostępności dotyku** (retro 3, R2). W teście widżetu każdego nowego albo zmienionego
    ekranu: `expect(tester, meetsGuideline(androidTapTargetGuideline))` i `meetsGuideline(labeledTapTargetGuideline)`
    (`flutter_test`, `accessibility.dart`) oraz reguła własna: **każdy węzeł semantyki z flagą przycisku ma akcję
@@ -50,10 +53,13 @@ Do czasu powstania krytyka (ISSUE-003, odłożony do sygnału — retro 3, R10) 
    miejsca** (terminal VS Code · plik w edytorze · emulator albo telefon · „napisz tutaj"). Czekaj na
    „ok" / „pomiń" (zapisz w pozycji) / opis błędu (→ `dev`). **Cisza ≠ pomiń.** Przy ekranach wizyty
    dopisz krok „czytelne w pełnym słońcu?" (NFR A2). To wyjątek, który wymaga prawdziwego telefonu i
-   buildu release (`DEFINITION_OF_DONE.md`).
+   buildu release (`DEFINITION_OF_DONE.md`). **Krok, który wymaga telewizora albo telefonu, nie idzie na stop #2 na
+   emulatorze** (retro 4, R4 — „pomiń” we wszystkich krokach w ISSUE-038 i ISSUE-039): wpisz go od razu jako wiersz listy
+   **B — odczucie** w [[ISSUE-032-mvp-install]] → *Hand checks*.
 5. Zapisz wynik w sekcji *Verification* pozycji + `quality-verdict` (`verdict-reviewer: self-check`). Każde
-   „pomiń”, „ok” bez śladu na urządzeniu i „nieprzetestowane na żywo” wypisz **osobno, po jednym w linii** — `docs`
-   przenosi je na listę [[ISSUE-032-mvp-install]] → *Hand checks* (retro 3, R8).
+   „pomiń”, „ok” bez śladu na urządzeniu i „nieprzetestowane na żywo” wypisz **osobno, po jednym w linii, z literą listy** — **A** (kopia, odtworzenie,
+   aktualizacja, migracja — bramka przed prawdziwymi danymi) albo **B** (odczucie — bez bramki); `docs` przenosi je do
+   [[ISSUE-032-mvp-install]] → *Hand checks* (retro 3, R8; podział — retro 4, R4).
 6. **Lista paczki dla `docs`:** wszystkie pliki, które ta pozycja zapisała (kod, testy, wygenerowane,
    vault). `docs` commituje dokładnie tę listę i wypycha ją na GitHub (`git-autonomy-boundary.md`). Stopu
    przed commitem ani pushem nie ma (retro 1, R1; decyzja autora 2026-10-07), więc kontrola danych rodziny

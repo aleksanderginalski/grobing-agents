@@ -37,11 +37,16 @@ Zamknięcie `docs` idzie **przed** commitem, więc jedna pozycja to jeden commit
    2026-10-05). Kroki pogrupowane **według miejsca**: terminal VS Code · plik w edytorze · emulator albo
    telefon · „napisz tutaj". Trzy odpowiedzi: **„ok"** · **„pomiń"** (zapisane, nie blokuje) ·
    **opis błędu**. **Cisza ≠ pomiń.** (Rytuał WZ-024: format → analiza → testy → kroki ręczne →
-   czekaj.)
+   czekaj.) **Krok, który wymaga telewizora albo telefonu, nie idzie na ten stop** — trafia od razu na listę
+   **B — odczucie** w [[ISSUE-032-mvp-install]] → *Hand checks* (retro 4, R4: „pomiń” we wszystkich krokach dwa razy z rzędu).
 3. **„go” tylko poza zwykłym pushem** (decyzja autora 2026-10-07). Commit i push commitów łańcucha robi
    `docs` sam, po checkliście. „go” jest potrzebne, gdy wychodzi commit spoza łańcucha, push został
    odrzucony albo operacja na zdalnym repo nie jest pushem (nowe repo, remote, ustawienia GitHuba) —
    `git-autonomy-boundary.md`. **Tryb auto nie znosi tego „go”.**
+
+**Jedno pytanie na raz przy otwartym stopie** (retro 4, R6): gdy stop albo pytanie do autora jest otwarte, każde inne pytanie
+idzie **osobno** albo z jawnym **„na które odpowiadasz?”**. W ISSUE-037 autor odpisał „ok” i nie było wiadomo, na co; w `/pm`
+2026-10-16 pytanie na końcu długiej wiadomości zostało bez odpowiedzi.
 
 ## Hard stops — independent of mode, cannot be removed
 

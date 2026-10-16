@@ -1,7 +1,7 @@
 ---
 name: pm
 description: 'Router sesji Grobing — jedyny punkt wejścia i zamknięcie sesji. Czyta stan (CURRENT_STATE, backlog, sprawy zaparkowane, licznik retro), mówi gdzie jesteśmy, proponuje następną pozycję i w auto-flow uruchamia łańcuch (ui, gdy pozycja ma ekran) → planning → dev → qa → docs; na końcu sesji mówi, co dalej i że można kończyć. Używaj na początku każdej sesji, gdy autor pisze „/pm", „co dalej", „zaczynamy", „start ISSUE-NNN", „gdzie jesteśmy", „kończymy".'
-updated: 2026-10-06
+updated: 2026-10-16
 ---
 
 # PM — router sesji
@@ -30,7 +30,12 @@ jest doświadczony (`kickoff/PROFILE.md`).
 4. Licznik ≥ 10 → zanim cokolwiek zaczniesz, zaproponuj retro i zadaj pytanie o fakty, np.: *czy
    ostatnie odtworzenie z kopii naprawdę zadziałało? · ile osób jest w aplikacji vs w notatkach? ·
    które cmentarze nie mają pinezek?*
-5. Zakończ blokiem: **gdzie jesteśmy · czego potrzebuję (jedna rzecz) · co potem**.
+4a. **Pytanie o cel przed projektem** (retro 4, R1): przy US prosto z kick-offu i przy nowym pomyśle autora — **jedno pytanie, po co
+   to autorowi dziś**, zanim ruszy `ui`. W ISSUE-040 eksport HTML + PDF z kick-offu rozpisano na specyfikację, makietę i przegląd biblioteki, a
+   autor na stopie #1 wycofał go jednym zdaniem; w `/pm` 2026-10-16 pytanie „po co fajerwerki na Wszystkie Święte?” dało termin instalacji
+   i kolejkę.
+5. Zakończ blokiem: **gdzie jesteśmy · czego potrzebuję (jedna rzecz) · co potem**. Przy otwartym pytaniu albo stopie każde inne
+   pytanie osobno albo z jawnym „na które odpowiadasz?” (retro 4, R6 — `autonomous-flow.md`).
 6. **Koniec sesji** (po zamknięciu pozycji albo gdy autor kończy — retro 1, R2): **co dalej** (jedna
    pozycja i dlaczego) i jasne **„możesz kończyć sesję”**. Najpierw sprawdź `git status` i
    `git log origin/main..main` trzech repo — jeśli coś nie jest zapisane, zacommitowane albo wypchnięte,
@@ -46,6 +51,7 @@ jest doświadczony (`kickoff/PROFILE.md`).
 |---|---|
 | Start pozycji z backlogu | `planning` (w auto-flow: cały łańcuch) |
 | Start pozycji, która dodaje albo zmienia ekran | `ui` → `planning` (w auto-flow: cały łańcuch). Specyfikacja ekranu już jest w `{vault}/05_DESIGN/` i pozycja jej nie zmienia → od razu `planning` |
+| Start US, która nie ma jeszcze ISSUE | **`docs` rozpisuje ją na ISSUE przed `ui`** (retro 4, R2 — w ISSUE-033 plan nie miał pliku, `planning` wołał `docs` w środku łańcucha; przy US-007, US-008 i ISSUE-039 rozpisanie przed `ui` działało) |
 | Zmiana gotowa do sprawdzenia | `qa` |
 | Pozycja skończona, vault nie zaktualizowany | `docs` |
 | Nowy pomysł spoza backlogu | zapisz w `{vault}/01_INBOX/` przez `docs`; agent `discover` zaproponuj dopiero, gdy to się powtarza |
