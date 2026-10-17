@@ -158,6 +158,15 @@ function New-EmptyFile([string]$Path) {
     [System.IO.File]::WriteAllText($Path, '')
 }
 
+# A PNG's first 26 bytes -- all the guard reads of a wreath motif (ISSUE-044): signature, IHDR, side x side, colour type.
+function New-PngHeader([string]$Path, [int]$Side, [byte]$ColourType) {
+    New-Item -ItemType Directory -Force -Path (Split-Path -Parent $Path) | Out-Null
+    $sideBytes = [BitConverter]::GetBytes([int]$Side)
+    [Array]::Reverse($sideBytes)
+    $bytes = [byte[]](0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0, 0, 0, 13) + [System.Text.Encoding]::ASCII.GetBytes('IHDR') + $sideBytes + $sideBytes + [byte[]](8, $ColourType, 0, 0, 0)
+    [System.IO.File]::WriteAllBytes($Path, $bytes)
+}
+
 # --- throwaway setup -------------------------------------------------------------------------
 $TmpRoot = Join-Path ([System.IO.Path]::GetTempPath()) ('grobing-guard-tests-' + [guid]::NewGuid().ToString('N').Substring(0, 8))
 $TmpAgents = Join-Path $TmpRoot 'grobing-agents'
@@ -207,7 +216,7 @@ try {
     }
     Assert-Guard 'code res/raw/a.mp4 (not a UI image type)' (Invoke-Guard (New-Payload (Join-Path $TmpCode 'android\app\src\main\res\raw\a.mp4'))) 2
     Assert-Guard 'code res/raw/x.db (no exception for databases)' (Invoke-Guard (New-Payload (Join-Path $TmpCode 'android\app\src\main\res\raw\x.db'))) 2
-    Assert-Guard 'code assets/x.png (no exception yet)' (Invoke-Guard (New-Payload (Join-Path $TmpCode 'assets\x.png'))) 2
+    Assert-Guard 'code assets/x.png (not a wreath motif)' (Invoke-Guard (New-Payload (Join-Path $TmpCode 'assets\x.png'))) 2
     Assert-Guard 'code lib/x.dart' (Invoke-Guard (New-Payload (Join-Path $TmpCode 'lib\x.dart'))) 0
     Assert-Guard 'code lib/features/backups/b.dart (folder not at root)' (Invoke-Guard (New-Payload (Join-Path $TmpCode 'lib\features\backups\b.dart'))) 0
     Assert-Guard 'vault 03_REQUIREMENTS/x.md' (Invoke-Guard (New-Payload (Join-Path $TmpVault '03_REQUIREMENTS\x.md'))) 0
@@ -265,6 +274,30 @@ try {
     Copy-Item -LiteralPath (Join-Path (Get-ConfigValue ([System.IO.File]::ReadAllText($RealConfig)) 'code_local_path') '.gitignore') -Destination (Join-Path $TmpCode '.gitignore')
     Assert-Guard 'Bash: git add . (proba.age ignored)' (Invoke-Guard (New-ShellPayload 'git add .')) 0
     Remove-Item -LiteralPath $stray
+
+    Write-Host "`n[ISSUE-044] wreath motifs: only a grey PNG with alpha, 640 x 640, named wieniec-<key>.png in grobing-code/assets/wreaths/"
+    $wreaths = Join-Path $TmpCode 'assets\wreaths'
+    New-PngHeader (Join-Path $wreaths 'wieniec-laur.png') 640 4
+    Assert-Guard 'git add: grey with alpha, 640 x 640 passes' (Invoke-Guard (New-ShellPayload 'git add assets/wreaths')) 0
+    foreach ($case in @(
+            @('wieniec-kolor.png', 640, 6, 'colour with alpha'),
+            @('wieniec-zdjecie.png', 640, 2, 'colour without alpha (a photo)'),
+            @('wieniec-szary.png', 640, 0, 'grey without alpha'),
+            @('wieniec-maly.png', 512, 4, 'grey with alpha, 512 x 512'))) {
+        $p = Join-Path $wreaths $case[0]
+        New-PngHeader $p $case[1] $case[2]
+        Assert-Guard "git add: refused -- $($case[3])" (Invoke-Guard (New-ShellPayload 'git add assets/wreaths')) 2 'obraz wienca'
+        Remove-Item -LiteralPath $p
+    }
+    $notPng = Join-Path $wreaths 'wieniec-tekst.png'
+    [System.IO.File]::WriteAllText($notPng, 'not a png at all')
+    Assert-Guard 'git add: refused -- not a PNG under the name' (Invoke-Guard (New-ShellPayload 'git add assets/wreaths')) 2 'obraz wienca'
+    Remove-Item -LiteralPath $notPng
+    Assert-Guard 'Write tool: a motif not on disk yet is refused' (Invoke-Guard (New-Payload (Join-Path $wreaths 'wieniec-dab.png'))) 2 'obraz wienca'
+    Assert-Guard 'Write tool: another name in assets/wreaths' (Invoke-Guard (New-Payload (Join-Path $wreaths 'inny.png'))) 2 'zdjecie albo film'
+    Assert-Guard 'Write tool: a motif name in another folder' (Invoke-Guard (New-Payload (Join-Path $TmpCode 'assets\other\wieniec-laur.png'))) 2 'zdjecie albo film'
+    Assert-Guard 'Write tool: a motif name in the vault (only grobing-code)' (Invoke-Guard (New-Payload (Join-Path $TmpVault '05_DESIGN\wieniec-laur.png'))) 2 'zdjecie albo film'
+    Remove-Item -LiteralPath (Join-Path $TmpCode 'assets') -Recurse -Force
 
     Write-Host "`n[D3] a file force-staged earlier (e.g. from a GUI) blocks the commit"
     New-EmptyFile (Join-Path $TmpVault 'zapis.db')
@@ -428,6 +461,10 @@ try {
     Assert-True ($hidden.Count -eq 0) 'grobing-code keeps UI images in res/' ("ignored: " + ($hidden -join ', '))
     Assert-True (Test-Ignored $code 'android/app/src/main/res/raw/x.db') 'grobing-code still hides *.db inside res/'
     Assert-True (Test-Ignored $code 'android/app/src/main/res/raw/a.mp4') 'grobing-code still hides video inside res/'
+    Assert-True (-not (Test-Ignored $code 'assets/wreaths/wieniec-laur.png')) 'grobing-code keeps the wreath motifs (ISSUE-044)'
+    Assert-True (Test-Ignored $code 'assets/wreaths/inny.png') 'grobing-code hides another image in assets/wreaths/'
+    Assert-True (Test-Ignored $code 'assets/wreaths/wieniec-x.db') 'grobing-code hides a database named like a motif'
+    Assert-True (Test-Ignored $code 'assets/other/wieniec-laur.png') 'grobing-code hides a motif name in another folder'
 }
 finally {
     if (Test-Path -LiteralPath $TmpRoot) { Remove-Item -LiteralPath $TmpRoot -Recurse -Force }

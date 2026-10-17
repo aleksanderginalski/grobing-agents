@@ -45,7 +45,9 @@
       backup     *.age *.tar                                                  (ADR-004)
       export     *.html *.pdf                                                 (ADR-004)
       media      *.jpg *.jpeg *.png *.heic *.heif *.webp *.gif *.bmp *.tif *.tiff *.dng *.mp4 *.mov
-                 the only exception: png/jpg/jpeg/gif/webp under grobing-code/android/app/src/main/res/
+                 exceptions: png/jpg/jpeg/gif/webp under grobing-code/android/app/src/main/res/;
+                 grobing-code/assets/wreaths/wieniec-<key>.png when the file is a grey PNG with
+                 alpha, 640 x 640 (ISSUE-044: the wreath motifs -- a photo is neither)
       folders    /exports/ /backups/ /family-data/ /real-data/ at a repo root
 
     THE STEMS (ISSUE-020)
@@ -92,6 +94,8 @@ $ShellTools = @('Bash', 'PowerShell')
 $MediaExt = @('jpg', 'jpeg', 'png', 'heic', 'heif', 'webp', 'gif', 'bmp', 'tif', 'tiff', 'dng', 'mp4', 'mov')
 $UiImageExt = @('png', 'jpg', 'jpeg', 'gif', 'webp')
 $UiImageDir = 'android/app/src/main/res/'
+$WreathPattern = '^assets/wreaths/wieniec-[a-z_]+\.png$'
+$WreathSide = 640
 $RootFolders = @('exports', 'backups', 'family-data', 'real-data')
 
 $StemsFileName = 'rdzenie-straznika.txt'
@@ -213,8 +217,25 @@ function Find-Repo($Repos, [string]$GuardPath) {
     return $null
 }
 
-# $Rel: path relative to the repo root, forward slashes. Returns the category or $null.
-function Get-FamilyCategory([string]$RepoName, [string]$Rel) {
+# A wreath motif (ISSUE-044) by its header: a PNG, 640 x 640, colour type 4 -- grey with alpha. A photo
+# saved as PNG has colour and no alpha, so it fails. Reads 26 bytes; a missing file fails too.
+function Test-WreathImage([string]$Path) {
+    if (-not $Path -or -not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $false }
+    $bytes = New-Object byte[] 26
+    $stream = [System.IO.File]::OpenRead($Path)
+    try { $read = $stream.Read($bytes, 0, 26) } finally { $stream.Dispose() }
+    if ($read -lt 26) { return $false }
+    $signature = @(0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A)
+    for ($i = 0; $i -lt 8; $i++) { if ($bytes[$i] -ne $signature[$i]) { return $false } }
+    if ([System.Text.Encoding]::ASCII.GetString($bytes, 12, 4) -ne 'IHDR') { return $false }
+    $width = ([int]$bytes[16] -shl 24) -bor ([int]$bytes[17] -shl 16) -bor ([int]$bytes[18] -shl 8) -bor [int]$bytes[19]
+    $height = ([int]$bytes[20] -shl 24) -bor ([int]$bytes[21] -shl 16) -bor ([int]$bytes[22] -shl 8) -bor [int]$bytes[23]
+    return ($width -eq $WreathSide -and $height -eq $WreathSide -and $bytes[25] -eq 4)
+}
+
+# $Rel: path relative to the repo root, forward slashes. Returns the category or $null. $Root: the repo's
+# folder -- the wreath exception looks into the file itself.
+function Get-FamilyCategory([string]$RepoName, [string]$Rel, [string]$Root = '') {
     $rel = $Rel.ToLowerInvariant()
     $segs = $rel.Split('/')
     if ($segs.Count -gt 1 -and $RootFolders -contains $segs[0]) { return "katalog danych rodziny /$($segs[0])/" }
@@ -227,6 +248,10 @@ function Get-FamilyCategory([string]$RepoName, [string]$Rel) {
     $ext = if ($name.Contains('.')) { $name.Substring($name.LastIndexOf('.') + 1) } else { '' }
     if ($MediaExt -contains $ext) {
         if ($RepoName -eq 'grobing-code' -and $rel.StartsWith($UiImageDir) -and $UiImageExt -contains $ext) { return $null }
+        if ($RepoName -eq 'grobing-code' -and $rel -match $WreathPattern) {
+            if ($Root -and (Test-WreathImage (Join-Path $Root $Rel))) { return $null }
+            return 'obraz wienca, ktory nie jest szarym PNG z przezroczystoscia 640x640 (ISSUE-044)'
+        }
         return 'zdjecie albo film'
     }
     return $null
@@ -568,7 +593,7 @@ try {
         $guardPath = ConvertTo-GuardPath $path ([string]$hook.cwd)
         $hit = Find-Repo $repos $guardPath
         if ($hit) {
-            $category = Get-FamilyCategory $hit.Repo.Name $hit.Rel
+            $category = Get-FamilyCategory $hit.Repo.Name $hit.Rel $hit.Repo.Root
             if ($category) {
                 Stop-Refuse (@(
                     "${Tag}: ODMOWA zapisu $($hit.Repo.Name)/$($hit.Rel)",
@@ -605,7 +630,7 @@ try {
             $states += [pscustomobject]@{ Repo = $r; State = $state }
             foreach ($p in $state.Paths) {
                 $rel = $p -replace '\\', '/'
-                $category = Get-FamilyCategory $r.Name $rel
+                $category = Get-FamilyCategory $r.Name $rel $r.Root
                 if ($category) { $found += "  - $($r.Name)/$rel ($category)" }
             }
         }
