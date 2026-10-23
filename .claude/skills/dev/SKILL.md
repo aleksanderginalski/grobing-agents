@@ -33,8 +33,8 @@ sieć jest opcjonalna (ADR-001 local-first, kanon z kick-offu).
    pozycji z ekranem, bo przejście szło główną drogą):
    - **każdy stan z *States*** specyfikacji, nie tylko główna droga — każdy ze zrzutem (ISSUE-029: 3 MAJOR w stanach
      bez kropki, bez mapy, bez sieci);
-   - **tekst 200% na ekranie 360 dp** (`font_scale 2.0`, `wm size`/`wm density`), a przy zdjęciach także zdjęcie w
-     sepii (ISSUE-024: 4 MAJOR);
+   - **przy zdjęciach — zdjęcie w sepii** (ISSUE-024: 4 MAJOR). **Tekstu 200% nie sprawdzasz** (decyzja autora 2026-10-23:
+     *„tak na prawdę możemy ignorować te teksty 200%”*; do tego dnia `font_scale 2.0` na 360 dp — retro 3, R3);
    - **semantyka i cel dotyku** w `uiautomator dump`: przycisk jest `clickable`, a granice węzła to granice
      elementu, nie całego arkusza (ISSUE-023, ISSUE-027, ISSUE-028);
    - **nowa warstwa mapy albo duże dane → pomiar czasu klatki w buildzie profile**, zanim padnie słowo „emulator”
@@ -42,8 +42,8 @@ sieć jest opcjonalna (ADR-001 local-first, kanon z kick-offu).
      buildem odniesienia** (APK sprzed zmiany, `adb shell pm path` + `adb pull` przed instalacją nowego) — retro 4, R3: w ISSUE-037
      szum hosta wyglądał na regres, dopiero build odniesienia go nazwał;
    - **„mieści się / kadr / nie mieści się” = liczba i najgorszy przypadek** (retro 4, R3): skala, szerokość, położenie z pomiaru —
-     nie opis; przy 100% **i** 200% na **najgorszym** przypadku z pomiaru, nie na przykładzie. W ISSUE-038 „drzewo szersze niż
-     ekran” było błędem zaokrąglenia, a w ISSUE-039 przejście 200% szło krótką ścieżką i MAJOR był na najszerszej.
+     nie opis; na **najgorszym** przypadku z pomiaru, nie na przykładzie (tekst 100%; 200% — nie od 2026-10-23). W ISSUE-038
+     „drzewo szersze niż ekran” było błędem zaokrąglenia, a w ISSUE-039 przejście szło krótką ścieżką i MAJOR był na najszerszej.
 3b. **Przenikanie grupy = jedna warstwa** (retro 4, R3): wiele elementów, które pojawiają się albo znikają razem, dostaje jedną
    wspólną warstwę przezroczystości, nie `Opacity`/`AnimatedOpacity` na każdym. Lekcja z ISSUE-033 wróciła w ISSUE-037 (14,6% wolnych
    klatek przy ▶), choć cytował ją komentarz w kodzie.

@@ -87,6 +87,9 @@ Wejście od `qa`: pozycja, ścieżka specyfikacji, ścieżki zrzutów z emulator
    - **cel dotyku ≥ 48 dp**: z kodu ekranu albo ze zrzutu i gęstości ekranu;
    - **kolor nie jest jedynym nośnikiem informacji** (błąd, brak, wybór);
    - na zrzutach są wyłącznie wymyślone osoby.
+
+   **Tekstu 200% nie sprawdzasz** (decyzja autora 2026-10-23, `style-b.md` → *Thresholds*): usterka widoczna tylko przy dużym
+   tekście nie jest znaleziskiem.
 3. Zwróć tabelę `Miejsce · Problem · Reguła · Poprawka` i listę tego, co sprawdziłeś i było zgodne.
    Ekran bez specyfikacji (sprzed `ui`) przeglądasz tylko według wytycznych i mówisz to w pierwszym
    zdaniu wyniku.
