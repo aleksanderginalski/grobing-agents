@@ -5,7 +5,8 @@
 > egzemplarzu, uzupełnianej, póki babcia może opowiedzieć, i trwalszej niż autor i sama aplikacja.
 > Pełna wartość: `{vault}/00_START_HERE/kickoff/PROJECT_BRIEF.md` §2.
 
-**Otwieraj `../Grobing.code-workspace`, nie sam folder** — i zaczynaj od **`/pm`**. Workspace stawia
+**Otwieraj `../Grobing.code-workspace`, nie sam folder** — i zaczynaj od **`/pm`**. **Jedna pozycja backlogu = jedna sesja**
+(`autonomous-flow.md`, decyzja autora 2026-10-23). Workspace stawia
 `grobing-agents` jako pierwszy folder (tu startuje Claude Code i ładuje ten plik), a `grobing-vault` i
 `grobing-code` dokłada jako katalogi dodatkowe — agenci czytają vault i kod bez `/add-dir` i bez
 ścieżek absolutnych. Ścieżki tej maszyny dla skryptów są w `.claude/rules/project-config.md` (lokalny,

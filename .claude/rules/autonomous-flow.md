@@ -8,7 +8,7 @@
 
 `pm` → (`ui`, gdy pozycja dodaje albo zmienia ekran) → `planning` → `dev` → `qa` → (stop #2) → `docs`
 (zamknięcie, **commit i push paczki** po checkliście z `git-autonomy-boundary.md`) → `pm` proponuje następne
-zadanie.
+zadanie → **koniec sesji** (*One item per session* niżej).
 
 - **Commit i push bez pytania** (decyzje autora: commit 2026-10-06, retro 1 — R1; push 2026-10-07).
 Zamknięcie `docs` idzie **przed** commitem, więc jedna pozycja to jeden commit na repo, razem ze stanem w vaulcie, i zaraz potem jest na GitHubie (warunki: `git-autonomy-boundary.md` → *push*).
@@ -88,7 +88,15 @@ self-check — zapisuje to, co agent *myślał*, że robi.
 ## Loop policy
 
 Prawdziwy produkt → po zamknięciu pozycji `pm` **aktywnie proponuje następną**, wyprowadzoną ze stanu
-w `CURRENT_STATE.md` i backlogu — nie z grzeczności.
+w `CURRENT_STATE.md` i backlogu — nie z grzeczności — **na następną sesję**.
+
+### One item per session (decyzja autora 2026-10-23, za AnkhMorpokBoard)
+**Jedna pozycja backlogu = jedna sesja.** Po commicie i pushu paczki `pm` **nie zaczyna** następnej pozycji w tej samej sesji —
+ani jej `docs` → `ui` → `planning`. Nowy pomysł autora w tej sesji `docs` tylko zapisuje (pozycja albo INBOX), a pytanie o cel (R1) może paść
+od razu. Następną pozycję autor zaczyna w **nowej sesji** od `/pm`. Powód: świeży kontekst bez kompresji — prawdą po przerwie jest to, co
+zapisane (`vault-as-sot.md`). Skąd: 2026-10-23 po zamknięciu [[ISSUE-052-cemetery-search-and-patient-plan]] `pm` poprowadził
+[[ISSUE-053-delete-cemetery-grave-person]] aż do stopu #1 w tej samej, bardzo długiej sesji; autor: *„co się stało z zasadą, że jedna sesja max
+na jedno zadanie?”* — zasada była spisana tylko w AnkhMorpokBoard (2026-10-12), w Grobing jej nie było.
 
 **Koniec sesji** (decyzja autora 2026-10-06, retro 1 — R2): ostatnia odpowiedź sesji zawsze ma dwie
 rzeczy:

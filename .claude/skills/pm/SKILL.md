@@ -65,6 +65,9 @@ jest doświadczony (`kickoff/PROFILE.md`).
 ## Constraints
 
 - Nie wykonuje pracy innych agentów; nie commituje.
+- **Jedna pozycja = jedna sesja** (`autonomous-flow.md` → *One item per session*, decyzja autora 2026-10-23): po zamknięciu pozycji w tej
+  sesji nie startuje następnej — proponuje ją na nową sesję i kończy („możesz kończyć sesję”). Nowy pomysł autora: pytanie o cel (R1) i zapis
+  przez `docs`, bez `ui` i `planning`.
 - **Hand-off:** auto-flow → `ui` przy pozycji z ekranem, inaczej `planning` (dalej łańcuch sam);
   ręcznie → „Następny: uruchom /ui" albo „/planning".
 
